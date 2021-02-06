@@ -61,12 +61,16 @@ public class VistaPrincipalComponent {
                     registrarContratoComponent.getVistaPrincipalComponent()
             );
         }
-
+        if (this.registrarIngresoComponent == null) {
+            this.registrarIngresoComponent = new RegistrarIngresoComponent(this);
+            this.registrarIngresoComponent.getRegistrarIngresoTemplate().setEstado(0);
+        }
         vistaPrincipalTemplate.repaint();
     }
 
     public void mostrarComponente(String comando) {
         vistaPrincipalTemplate.getpPrincipal().removeAll();
+        this.registrarIngresoComponent.getRegistrarIngresoTemplate().setEstado(0);
         switch (comando) {
             case "Registrar Parqueadero":
                 if (this.registrarParqueaderoComponent == null) {
@@ -107,9 +111,7 @@ public class VistaPrincipalComponent {
                 );
                 break;
             case "Registrar Ingreso":
-                if (this.registrarIngresoComponent == null) {
-                    this.registrarIngresoComponent = new RegistrarIngresoComponent(this);
-                }
+                this.registrarIngresoComponent.getRegistrarIngresoTemplate().setEstado(1);
                 vistaPrincipalTemplate.crearScrollpane(
                         registrarIngresoComponent.getRegistrarIngresoTemplate()
                 );
