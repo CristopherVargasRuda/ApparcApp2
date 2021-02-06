@@ -13,7 +13,7 @@ import app.client.components.registrarFuncionario.RegistrarFuncionarioComponent;
 import app.client.components.registrarIngreso.RegistrarIngresoComponent;
 import app.client.components.registrarParqueadero.RegistrarParqueaderoComponent;
 import app.client.login.LoginComponent;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
+//import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
 
 import java.awt.Frame;
 
@@ -55,18 +55,22 @@ public class VistaPrincipalComponent {
                     navegacionFuncionarioComponent.getNavegacionFuncionarioTemplate()
             );
             if (this.principalParqueaderoComponent == null) {
-                this.registrarContratoComponent = new RegistrarContratoComponent(this);
+                this.principalParqueaderoComponent = new PrincipalParqueaderoComponent(this);
             }
             vistaPrincipalTemplate.crearScrollpane(
-                    registrarContratoComponent.getVistaPrincipalComponent()
+                    principalParqueaderoComponent.getPrincipalParqueaderoTemplate()
             );
         }
-
+        if (this.registrarIngresoComponent == null) {
+            this.registrarIngresoComponent = new RegistrarIngresoComponent(this);
+            this.registrarIngresoComponent.getRegistrarIngresoTemplate().setEstado(0);
+        }
         vistaPrincipalTemplate.repaint();
     }
 
     public void mostrarComponente(String comando) {
         vistaPrincipalTemplate.getpPrincipal().removeAll();
+        this.registrarIngresoComponent.getRegistrarIngresoTemplate().setEstado(0);
         switch (comando) {
             case "Registrar Parqueadero":
                 if (this.registrarParqueaderoComponent == null) {
@@ -107,9 +111,7 @@ public class VistaPrincipalComponent {
                 );
                 break;
             case "Registrar Ingreso":
-                if (this.registrarIngresoComponent == null) {
-                    this.registrarIngresoComponent = new RegistrarIngresoComponent(this);
-                }
+                this.registrarIngresoComponent.getRegistrarIngresoTemplate().setEstado(1);
                 vistaPrincipalTemplate.crearScrollpane(
                         registrarIngresoComponent.getRegistrarIngresoTemplate()
                 );
