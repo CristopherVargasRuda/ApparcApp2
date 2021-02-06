@@ -13,7 +13,7 @@ import app.client.components.registrarFuncionario.RegistrarFuncionarioComponent;
 import app.client.components.registrarIngreso.RegistrarIngresoComponent;
 import app.client.components.registrarParqueadero.RegistrarParqueaderoComponent;
 import app.client.login.LoginComponent;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
+//import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
 
 import java.awt.Frame;
 
@@ -55,10 +55,10 @@ public class VistaPrincipalComponent {
                     navegacionFuncionarioComponent.getNavegacionFuncionarioTemplate()
             );
             if (this.principalParqueaderoComponent == null) {
-                this.registrarContratoComponent = new RegistrarContratoComponent(this);
+                this.principalParqueaderoComponent = new PrincipalParqueaderoComponent(this);
             }
             vistaPrincipalTemplate.crearScrollpane(
-                    registrarContratoComponent.getVistaPrincipalComponent()
+                    principalParqueaderoComponent.getPrincipalParqueaderoTemplate()
             );
         }
         if (this.registrarIngresoComponent == null) {
