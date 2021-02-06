@@ -1,12 +1,16 @@
 package negocio.models;
 
+import java.util.Date;
+
 public class Contrato {
 
-    private int idContrato, valorPago, diaInicio, mesInicio, anioInicio,
-            diaFinal, mesFinal, anioFinal;
+    private int idContrato, valorPago;
+    private String fechaInicio;
+    private String fechaFin;
     private String periodo;
     private Cliente cliente;
     private Vehiculo vehiculo;
+    private boolean estadoContrato;
 
     public Contrato() {
     }
@@ -26,53 +30,21 @@ public class Contrato {
     public void setValorPago(int valorPago) {
         this.valorPago = valorPago;
     }
-
-    public int getDiaInicio() {
-        return diaInicio;
+    
+    public String getFechaInicio() {
+        return fechaInicio;
     }
 
-    public void setDiaInicio(int diaInicio) {
-        this.diaInicio = diaInicio;
+    public void setFechaInicio(String fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+    
+    public String getFechaFin() {
+        return fechaFin;
     }
 
-    public int getMesInicio() {
-        return mesInicio;
-    }
-
-    public void setMesInicio(int mesInicio) {
-        this.mesInicio = mesInicio;
-    }
-
-    public int getAnioInicio() {
-        return anioInicio;
-    }
-
-    public void setAnioInicio(int anioInicio) {
-        this.anioInicio = anioInicio;
-    }
-
-    public int getDiaFinal() {
-        return diaFinal;
-    }
-
-    public void setDiaFinal(int diaFinal) {
-        this.diaFinal = diaFinal;
-    }
-
-    public int getMesFinal() {
-        return mesFinal;
-    }
-
-    public void setMesFinal(int mesFinal) {
-        this.mesFinal = mesFinal;
-    }
-
-    public int getAnioFinal() {
-        return anioFinal;
-    }
-
-    public void setAnioFinal(int anioFinal) {
-        this.anioFinal = anioFinal;
+    public void setFechaFin(String fechaFin) {
+        this.fechaFin = fechaFin;
     }
 
     public String getPeriodo() {
@@ -97,6 +69,14 @@ public class Contrato {
 
     public void setVehiculo(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
+    }
+    
+    public boolean isEstadoContrato() {
+        return estadoContrato;
+    }
+
+    public void setEstadoContrato(boolean estadoContrato) {
+        this.estadoContrato = estadoContrato;
     }
 
 }

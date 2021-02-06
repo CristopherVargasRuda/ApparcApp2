@@ -2,7 +2,7 @@ package negocio.models;
 
 public class Vehiculo {
 
-    private String placa, tipo, color, modelo, marca;
+    private String placa, tipoVehiculo, color, modelo, marca;
 
     public Vehiculo() {
     }
@@ -15,12 +15,12 @@ public class Vehiculo {
         this.placa = placa;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getTipoVehiculo() {
+        return tipoVehiculo;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoVehiculo(String tipoVehiculo) {
+        this.tipoVehiculo = tipoVehiculo;
     }
 
     public String getColor() {

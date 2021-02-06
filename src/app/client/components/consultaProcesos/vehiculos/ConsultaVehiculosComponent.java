@@ -73,7 +73,7 @@ public class ConsultaVehiculosComponent implements ActionListener, MouseListener
     public void agregarRegistro(Vehiculo vehiculo) {
         String placa, tipo;
         placa = vehiculo.getPlaca();
-        tipo = vehiculo.getTipo();
+        tipo = vehiculo.getTipoVehiculo();
         consultaVehiculosTemplate.getModelo().addRow(
                 new Object[]{placa, tipo}
         );

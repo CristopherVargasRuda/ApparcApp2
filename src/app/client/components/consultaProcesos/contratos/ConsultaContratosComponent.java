@@ -73,16 +73,14 @@ public class ConsultaContratosComponent implements ActionListener, MouseListener
         nombreCliente, placaVehiculo;
         idContrato = contrato.getIdContrato()+"";
         valorPago = contrato.getValorPago()+"";
-        fechaInicio = contrato.getDiaInicio()+ "/" + contrato.getMesInicio() 
-                + "/" + contrato.getAnioInicio();
-        fechaFinal = contrato.getDiaFinal()+ "/" + contrato.getMesFinal()
-                + "/" + contrato.getAnioFinal();
+        fechaInicio = contrato.getFechaInicio();
+        fechaFinal = contrato.getFechaFin();
         periodo = contrato.getPeriodo();
         nombreCliente = contrato.getCliente().getPrimerNombre()
                 + contrato.getCliente().getSegundoNombre()
                 + contrato.getCliente().getPrimerApellido()
                 + contrato.getCliente().getSegundoApellido();
-        cedula = contrato.getCliente().getCedula()+"";
+        cedula = contrato.getCliente().getCedulaCliente()+"";
         placaVehiculo = contrato.getVehiculo().getPlaca();
         
         consultaContratosTemplate.getModelo().addRow(
