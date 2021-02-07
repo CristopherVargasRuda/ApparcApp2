@@ -50,10 +50,10 @@ public class RegistrarSalidaComponent implements ActionListener, MouseListener, 
             //Info BD necesaria... 
             opcionSalidaComponent = new OpcionSalidaComponent(this);
 
-            registrarSalidaTemplate.crearContenidoProductos(opcionSalidaComponent.getOpcionSalidaTemplate());
+            registrarSalidaTemplate.crearScrollpane(opcionSalidaComponent.getOpcionSalidaTemplate());
 
             //opcionContratoComponent = new OpcionContratoComponent(this);
-            //registrarSalidaTemplate.crearContenidoProductos(opcionContratoComponent.getOpcionContratoTemplate());
+            //registrarSalidaTemplate.crearScrollpane(opcionContratoComponent.getOpcionContratoTemplate());
             registrarSalidaTemplate.getpInferior().repaint();
 
         }
@@ -111,12 +111,10 @@ public class RegistrarSalidaComponent implements ActionListener, MouseListener, 
 
     @Override
     public void mousePressed(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

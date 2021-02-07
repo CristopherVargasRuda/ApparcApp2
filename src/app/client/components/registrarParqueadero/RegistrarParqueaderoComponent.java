@@ -32,7 +32,6 @@ public class RegistrarParqueaderoComponent implements ActionListener,
     private JComboBox comboBox;
     private String seleccionComboBox;
 
-    private JButton botonSeleccionado;
 
     public RegistrarParqueaderoComponent(VistaPrincipalComponent vistaPrincipalComponent) {
         parqueadero = new Parqueadero();

@@ -120,7 +120,7 @@ public class VistaPrincipalComponent {
                 if (this.generarFacturaComponent == null) {
                     this.generarFacturaComponent = new RegistrarSalidaComponent(this);
                 }
-                vistaPrincipalTemplate.crearScrollpane(
+                vistaPrincipalTemplate.getpPrincipal().add(
                         generarFacturaComponent.getRegistrarSalidaTemplate()
                 );
                 break;

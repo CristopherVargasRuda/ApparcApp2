@@ -34,9 +34,12 @@ public class RegistrarSalidaTemplate extends JPanel {
 
         this.crearObjetosDecoradores();
         this.crearJPanels();
+        this.crearJTextFields();
+        this.crearJButtons();
+        this.crearJLabels();
+        
         this.setBorder(sRecursos.getBordeNegro());
         this.setBackground(sRecursos.getColorAzulOscuro());
-        this.setPreferredSize(new Dimension(880, 1000));
         this.setSize(900, 530);
         this.setLayout(null);
         this.setVisible(true);
@@ -60,14 +63,10 @@ public class RegistrarSalidaTemplate extends JPanel {
     public void crearJTextFields() {
 
         //PLACA
-        txtPlaca = sObjGraficos.construirJTextField("Placa del veh�culo", 200, 50, 400, 40, null, Color.WHITE, sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c");
+        txtPlaca = sObjGraficos.construirJTextField("Placa del vehículo", 200, 50, 400, 40, null, Color.WHITE, sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c");
         txtPlaca.setBorder(sRecursos.getBordeNaranja());
         txtPlaca.addFocusListener(registrarSalidaComponent);
         pSuperior.add(txtPlaca);
-    }
-
-    public void crearJPasswordFields() {
-
     }
 
     public void crearJButtons() {
@@ -90,7 +89,7 @@ public class RegistrarSalidaTemplate extends JPanel {
         pSuperior.add(lblPlaca);
     }
 
-    public void crearContenidoProductos(JPanel panel) {
+    public void crearScrollpane(JPanel panel) {
 
         this.scrollpane = sObjGraficos.construirPanelBarra(panel, 0, 0, 898, 400, null, null);
         this.scrollpane.getVerticalScrollBar().setUI(sGraficosAvanzados.devolverScrollPersonalizado(7, 10, Color.WHITE, sRecursos.getColorNaranja(), sRecursos.getColorAzulOscuro()));
