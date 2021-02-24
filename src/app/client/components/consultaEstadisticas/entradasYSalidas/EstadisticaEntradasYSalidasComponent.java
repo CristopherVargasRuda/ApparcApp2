@@ -10,11 +10,15 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import util.CaException;
 
 public class EstadisticaEntradasYSalidasComponent implements ActionListener, MouseListener, FocusListener {
 
@@ -42,7 +46,14 @@ public class EstadisticaEntradasYSalidasComponent implements ActionListener, Mou
     @Override
     public void actionPerformed(ActionEvent e) {
         if (cargarDatos()) {
-            montarDatos();
+            try {
+                control.cargarContrato();
+                //montarDatos();
+            } catch (CaException ex) {
+                Logger.getLogger(EstadisticaEntradasYSalidasComponent.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(EstadisticaEntradasYSalidasComponent.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -219,20 +230,20 @@ public class EstadisticaEntradasYSalidasComponent implements ActionListener, Mou
         String parqueadero, idServicio, coste, fechaIngreso, horaIngreso,
                 fechaSalida, horaSalida;
         parqueadero = servicio.getParqueadero().getNombre();
-        idServicio = servicio.getIdServicio();
+        /*idServicio = servicio.getIdServicio();
         coste = servicio.getValorPago() + "";
         fechaIngreso = servicio.getDiaIngreso() + " / "
                 + servicio.getMesIngreso() + " / " + servicio.getAnioIngreso();
         horaIngreso = servicio.getHoraIngreso() + "";
         fechaSalida = servicio.getDiaSalida() + " / "
                 + servicio.getMesSalida() + " / " + servicio.getAnioSalida();
-        horaSalida = servicio.getHoraSalida() + "";
+        horaSalida = servicio.getHoraSalida() + "";_
         estadisticaEntradasYSalidasTemplate.getModelo().addRow(
                 new Object[]{
                     parqueadero, idServicio, coste, fechaIngreso, horaIngreso,
                     fechaSalida, horaSalida
                 }
-        );
+        );*/
     }
 
 }

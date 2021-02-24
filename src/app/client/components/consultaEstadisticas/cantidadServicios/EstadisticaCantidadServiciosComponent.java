@@ -178,7 +178,7 @@ public class EstadisticaCantidadServiciosComponent implements ActionListener, Mo
     }
 
     public void agregarRegistro(Servicio servicio) {
-        String parqueadero, vehiculo, fechaIngreso, horaIngreso;
+       /* String parqueadero, vehiculo, fechaIngreso, horaIngreso;
         parqueadero = servicio.getParqueadero().getNombre();
         vehiculo = servicio.getVehiculo().getPlaca();        
         fechaIngreso = servicio.getDiaIngreso() + " / "
@@ -188,7 +188,7 @@ public class EstadisticaCantidadServiciosComponent implements ActionListener, Mo
                 new Object[]{
                     parqueadero, vehiculo, fechaIngreso, horaIngreso
                 }
-        );
+        );*/
     }
 
 }
