@@ -4,7 +4,11 @@ import java.util.Date;
 
 public class Contrato {
 
-    private int idContrato, valorPago;
+    private int idContrato;
+    private int valorPago;
+    private int codigoParqueadero;
+    private int cedulaCliente;
+    private String placa;
     private String fechaInicio;
     private String fechaFin;
     private String periodo;
@@ -23,6 +27,30 @@ public class Contrato {
         this.idContrato = idContrato;
     }
 
+    public int getCodigoParqueadero() {
+        return codigoParqueadero;
+    }
+
+    public void setCodigoParqueadero(int codigoParqueadero) {
+        this.codigoParqueadero = codigoParqueadero;
+    }
+
+    public int getCedulaCliente() {
+        return cedulaCliente;
+    }
+
+    public void setCedulaCliente(int cedulaCliente) {
+        this.cedulaCliente = cedulaCliente;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
     public int getValorPago() {
         return valorPago;
     }
@@ -30,7 +58,7 @@ public class Contrato {
     public void setValorPago(int valorPago) {
         this.valorPago = valorPago;
     }
-    
+
     public String getFechaInicio() {
         return fechaInicio;
     }
@@ -38,7 +66,7 @@ public class Contrato {
     public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
-    
+
     public String getFechaFin() {
         return fechaFin;
     }
@@ -70,7 +98,7 @@ public class Contrato {
     public void setVehiculo(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
     }
-    
+
     public boolean isEstadoContrato() {
         return estadoContrato;
     }

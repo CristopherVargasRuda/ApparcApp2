@@ -1,10 +1,11 @@
 package negocio.models;
 
 public class Cliente {
-    
-    private String primerNombre, segundoNombre, primerApellido, segundoApellido, 
+
+    private String primerNombre, segundoNombre, primerApellido, segundoApellido,
             sexo, tipoDocumento, direccion;
-    private int cedulaCliente, telefono, telefonoOpcional;
+    private int cedulaCliente;
+    private float telefono;
 
     public String getPrimerNombre() {
         return primerNombre;
@@ -70,24 +71,12 @@ public class Cliente {
         this.cedulaCliente = cedulaCliente;
     }
 
-    public int getTelefono() {
+    public float getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(float telefono) {
         this.telefono = telefono;
     }
 
-    public int getTelefonoOpcional() {
-        return telefonoOpcional;
-    }
-
-    public void setTelefonoOpcional(int telefonoOpcional) {
-        this.telefonoOpcional = telefonoOpcional;
-    }
-
-    
-
-    
-    
 }

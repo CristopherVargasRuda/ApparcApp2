@@ -25,7 +25,8 @@ public class ConsultaContratosTemplate extends JPanel {
     private JTableHeader header;
     private DefaultTableModel modelo;
     private String[] cabecera = {"idContrato", "Valor Pago", "Fecha Inicio", 
-        "Fecha Final", "Periodo", "Nombre Cliente", "Cedula", "Placa Vehículo"};
+        "Fecha Final", "Periodo", "Nombre Cliente", "Identificación", 
+        "Placa Vehículo"};
 
     public ConsultaContratosTemplate(ConsultaContratosComponent consultaContratosComponent) {
         this.consultaContratosComponent = consultaContratosComponent;
@@ -68,9 +69,9 @@ public class ConsultaContratosTemplate extends JPanel {
         tabla.setDefaultRenderer(
                 Object.class,
                 sGraficosAvanzados.devolverTablaPersonalizada(
-                        Color.WHITE, sRecursos.getColorGrisClaro(),
+                        Color.WHITE, sRecursos.getColorNavegacionFondo(),
                         sRecursos.getColorNaranja(),
-                        sRecursos.getColorGrisOscuro(),
+                        Color.BLACK,
                         sRecursos.getFontLigera()
                 )
         );

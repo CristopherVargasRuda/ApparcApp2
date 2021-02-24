@@ -369,11 +369,11 @@ public class RegistrarContratoComponent implements ActionListener,
         }
         
         // TELEFONO OPCIONAL CLIENTE --------------------------------------------   
-        if (!registrarContratoTemplate.gettTelefonoOpcional().getText().equals("Telefono (Opcional)")
+        /*if (!registrarContratoTemplate.gettTelefonoOpcional().getText().equals("Telefono (Opcional)")
                 && !registrarContratoTemplate.gettTelefonoOpcional().getText().equals("")
                 && vistaPrincipalComponent.validarNumeros(
                         registrarContratoTemplate.gettTelefonoOpcional().getText().trim(), 2)) {
-            cliente.setTelefonoOpcional(Integer.parseInt(
+            cliente.setTelefonoOpcional(Float.parseFloat(
                     registrarContratoTemplate.gettTelefonoOpcional().getText().trim()
             )
             );
@@ -383,7 +383,7 @@ public class RegistrarContratoComponent implements ActionListener,
             );
             JOptionPane.showMessageDialog(null, "Ingrese telefono (opcional)", "Advertencia", 1);
             return false;
-        }
+        }*/
 
         // TIPO DE VEHICULO --------------------------------------------   
         seleccionComboBox = (String) registrarContratoTemplate.getCbTipoVehiculo().getSelectedItem();

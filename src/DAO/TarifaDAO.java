@@ -17,6 +17,28 @@ public class TarifaDAO {
     public TarifaDAO() {
         tarifa = new Tarifa();
     }
+    
+    public void registrarTarifa(int codigoParqueadero) throws CaException {
+        String sql = "INSERT INTO tarifa(k_idTarifa, n_tipoVehiculo, "
+                + "v_valorMaxMinuto, k_codigoParqueadero) VALUES (?, ?, ?, ?)";
+        ResultSet rs;
+        try {
+            Connection conexion = ServiceLocator.getInstance().tomarConexion();
+            PreparedStatement prepStmt = conexion.prepareStatement(sql);
+            prepStmt.setInt(1, tarifa.getIdTarifa());
+            prepStmt.setString(2, tarifa.getTipoVehiculo());
+            prepStmt.setInt(3, tarifa.getPrecioMaximoMinuto());
+            prepStmt.setInt(4, codigoParqueadero);
+            prepStmt.executeUpdate();
+            prepStmt.close();
+            ServiceLocator.getInstance().commit();
+
+        } catch (SQLException e) {
+            throw new CaException("ParqueaderoDAO", "No se puede insertar los datos del  parqueadero" + e.getMessage());
+        } finally {
+            ServiceLocator.getInstance().liberarConexion();
+        }
+    }
 
     public void insertar() throws CaException {
 

@@ -42,7 +42,7 @@ public class LoginComponent implements ActionListener, FocusListener, MouseListe
         }
         if (e.getSource() == loginTemplate.getbMinimizar()) {
             minimizar();
-        }
+        }        
         if (e.getSource() == loginTemplate.getbIngresar()) {
             if (loginTemplate.getCheckAdministrador().isSelected()) {
                 if (nombre.equals("administrador")) {

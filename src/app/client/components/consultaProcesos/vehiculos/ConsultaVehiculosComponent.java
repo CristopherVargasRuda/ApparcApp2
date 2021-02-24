@@ -8,9 +8,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import javax.swing.JButton;
 import negocio.logic.controlTablas.ControlTablaVehiculos;
 import negocio.models.Vehiculo;
+import util.CaException;
 
 public class ConsultaVehiculosComponent implements ActionListener, MouseListener, FocusListener {
 
@@ -61,6 +63,11 @@ public class ConsultaVehiculosComponent implements ActionListener, MouseListener
 
     @Override
     public void focusLost(FocusEvent e) {
+    }
+
+    public void actualizarTabla() throws CaException, SQLException {
+        controlTablaVehiculos.cargarVehiculo();
+        this.mostrarRegistrosTabla();
     }
 
     public void mostrarRegistrosTabla() {

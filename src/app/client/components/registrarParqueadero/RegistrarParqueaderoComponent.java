@@ -10,30 +10,41 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import negocio.logic.ControlRegistrarParqueadero;
 import negocio.models.Tarifa;
+import util.CaException;
 
 public class RegistrarParqueaderoComponent implements ActionListener,
         MouseListener, FocusListener {
 
     private RegistrarParqueaderoTemplate registrarParqueaderoTemplate;
     private VistaPrincipalComponent vistaPrincipalComponent;
+    private ControlRegistrarParqueadero controlRegistrarParqueadero;
+    private ArrayList<Area> areas;
+    private ArrayList<Espacio> espacios;
+    private ArrayList<Tarifa> tarifas;
     private Parqueadero parqueadero;
     private Area area;
     private Espacio espacio;
     private Tarifa tarifa;
-    private int cantidad;
+    private int cantidad, contadorAreas, contadorPrecios;
     private JTextField textField;
     private JButton boton;
     private JComboBox comboBox;
     private String seleccionComboBox;
 
-
     public RegistrarParqueaderoComponent(VistaPrincipalComponent vistaPrincipalComponent) {
+        areas = new ArrayList<Area>();
+        tarifas = new ArrayList<Tarifa>();
+        controlRegistrarParqueadero = new ControlRegistrarParqueadero();
         parqueadero = new Parqueadero();
         this.vistaPrincipalComponent = vistaPrincipalComponent;
         registrarParqueaderoTemplate = new RegistrarParqueaderoTemplate(this);
@@ -47,7 +58,20 @@ public class RegistrarParqueaderoComponent implements ActionListener,
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == registrarParqueaderoTemplate.getbRegistrarParqueadero()) {
             if (cargarDatos()) {
-                JOptionPane.showMessageDialog(null, "Registro Exitoso", "Advertencia", 1);
+               
+                
+                
+                try {
+
+                    
+                    
+                    
+                    controlRegistrarParqueadero.registrarParqueadero(parqueadero);
+                    JOptionPane.showMessageDialog(null, "Registro Exitoso", "Advertencia", 1);
+                } catch (CaException ex) {
+                    JOptionPane.showMessageDialog(null,
+                            "Registro Fallido:\n" + ex, "Advertencia", 1);
+                }
             }
         }
         if (e.getSource() == registrarParqueaderoTemplate.getbLimpiar()) {
@@ -100,6 +124,10 @@ public class RegistrarParqueaderoComponent implements ActionListener,
             textField.setBorder(
                     registrarParqueaderoTemplate.getsRecursos().getBordeSeleccion()
             );
+            if (e.getSource() == registrarParqueaderoTemplate.gettCodigoParqueadero()
+                    && textField.getText().equals("Código del parqueadero")) {
+                registrarParqueaderoTemplate.gettCodigoParqueadero().setText("");
+            }
             if (e.getSource() == registrarParqueaderoTemplate.gettNombreParqueadero()
                     && textField.getText().equals("Nombre del parqueadero")) {
                 registrarParqueaderoTemplate.gettNombreParqueadero().setText("");
@@ -180,6 +208,10 @@ public class RegistrarParqueaderoComponent implements ActionListener,
             textField.setBorder(
                     registrarParqueaderoTemplate.getsRecursos().getBordeNaranja()
             );
+            if (e.getSource() == registrarParqueaderoTemplate.gettCodigoParqueadero()
+                    && textField.getText().equals("")) {
+                registrarParqueaderoTemplate.gettCodigoParqueadero().setText("Código del parqueadero");
+            }
             if (e.getSource() == registrarParqueaderoTemplate.gettNombreParqueadero()
                     && textField.getText().equals("")) {
                 registrarParqueaderoTemplate.gettNombreParqueadero().setText("Nombre del parqueadero");
@@ -254,6 +286,26 @@ public class RegistrarParqueaderoComponent implements ActionListener,
     }
 
     public boolean cargarDatos() {
+        contadorAreas = 0;
+        contadorPrecios = 0;
+        areas.clear();
+        tarifas.clear();
+
+        // CÓDIGO PARQUEADERO -------------------------------------------------        
+        if (!registrarParqueaderoTemplate.gettCodigoParqueadero().getText().equals("Código del parqueadero")
+                && !registrarParqueaderoTemplate.gettCodigoParqueadero().getText().equals("")
+                && vistaPrincipalComponent.validarNumeros(
+                        registrarParqueaderoTemplate.gettCodigoParqueadero().getText().trim(), 15)) {
+            parqueadero.setCodigo(Integer.parseInt(registrarParqueaderoTemplate.gettCodigoParqueadero().getText().trim()));
+        } else {
+            registrarParqueaderoTemplate.gettCodigoParqueadero().setBorder(
+                    registrarParqueaderoTemplate.getsRecursos().getBordeRojo()
+            );
+            JOptionPane.showMessageDialog(null, "Ingrese un código de solo "
+                    + "números al parqueadero", "Advertencia", 1);
+            return false;
+        }
+
         // NOMBRE PARQUEADERO -------------------------------------------------        
         if (!registrarParqueaderoTemplate.gettNombreParqueadero().getText().equals("Nombre del parqueadero")
                 && !registrarParqueaderoTemplate.gettNombreParqueadero().getText().equals("")) {
@@ -360,7 +412,9 @@ public class RegistrarParqueaderoComponent implements ActionListener,
         seleccionComboBox = (String) registrarParqueaderoTemplate.getCbFactorDemandaZonal().getSelectedItem();
         if (!seleccionComboBox.equals("Seleccione una opción")
                 && !seleccionComboBox.equals("")) {
-            parqueadero.setFactorDemandaZonal(Float.parseFloat(seleccionComboBox.trim()));
+            parqueadero.setFactorDemandaZonal(Float.parseFloat(
+                    seleccionComboBox.trim())
+            );
         } else {
             registrarParqueaderoTemplate.getCbFactorDemandaZonal().setBorder(
                     BorderFactory.createLineBorder(
@@ -380,7 +434,6 @@ public class RegistrarParqueaderoComponent implements ActionListener,
             } else {
                 parqueadero.setEstado(false);
             }
-            parqueadero.setNombre(seleccionComboBox.trim());
         } else {
             registrarParqueaderoTemplate.getCbEstado().setBorder(
                     BorderFactory.createLineBorder(
@@ -398,23 +451,33 @@ public class RegistrarParqueaderoComponent implements ActionListener,
                         registrarParqueaderoTemplate.getTnAutomoviles().getText().trim(), 3)) {
             cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnAutomoviles().getText());
             if (cantidad > 0) {
+                contadorAreas++;
                 area = new Area();
+                area.setIdArea(contadorAreas);
+                area.setCantidadCupos(cantidad);
+                area.setCantidadCuposDisponibles(cantidad);
                 area.setTipoVehiculo("Automovil");
+                espacios = new ArrayList<Espacio>();
                 for (int i = 0; i < cantidad; i++) {
                     espacio = new Espacio();
                     espacio.setEstado(true);
-                    espacio.setIdEspacio(cantidad);
-                    area.agregarEspacio(espacio);
+                    espacio.setIdEspacio(i + 1);
+                    espacios.add(espacio);
                 }
+                area.setEspacios(espacios);
+                areas.add(area);
                 if (!registrarParqueaderoTemplate.getTnVMPMAutomoviles().getText().equals("Valor Máximo Por Minuto de Automóviles")
                         && !registrarParqueaderoTemplate.getTnVMPMAutomoviles().getText().equals("")
                         && vistaPrincipalComponent.validarNumeros(
                                 registrarParqueaderoTemplate.getTnVMPMAutomoviles().getText().trim(), 3)) {
                     cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnVMPMAutomoviles().getText());
                     if (cantidad > 0) {
+                        contadorPrecios++;
                         tarifa = new Tarifa();
-                        tarifa.setTipoVehiculo("Automoviles");
+                        tarifa.setIdTarifa(contadorPrecios);
+                        tarifa.setTipoVehiculo("Automovil");
                         tarifa.setPrecioMaximoMinuto(cantidad);
+                        tarifas.add(tarifa);
                     } else {
                         registrarParqueaderoTemplate.getTnVMPMAutomoviles().setBorder(
                                 registrarParqueaderoTemplate.getsRecursos().getBordeRojo()
@@ -445,23 +508,33 @@ public class RegistrarParqueaderoComponent implements ActionListener,
                         registrarParqueaderoTemplate.getTnCamperos().getText().trim(), 3)) {
             cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnCamperos().getText());
             if (cantidad > 0) {
+                contadorAreas++;
                 area = new Area();
-                area.setTipoVehiculo("Camperos");
+                area.setIdArea(contadorAreas);
+                area.setCantidadCupos(cantidad);
+                area.setCantidadCuposDisponibles(cantidad);
+                area.setTipoVehiculo("Campero");
+                espacios = new ArrayList<Espacio>();
                 for (int i = 0; i < cantidad; i++) {
                     espacio = new Espacio();
                     espacio.setEstado(true);
-                    espacio.setIdEspacio(cantidad);
-                    area.agregarEspacio(espacio);
+                    espacio.setIdEspacio(i + 1);
+                    espacios.add(espacio);
                 }
+                area.setEspacios(espacios);
+                areas.add(area);
                 if (!registrarParqueaderoTemplate.getTnVMPMCamperos().getText().equals("Valor Máximo Por Minuto de Camperos")
                         && !registrarParqueaderoTemplate.getTnVMPMCamperos().getText().equals("")
                         && vistaPrincipalComponent.validarNumeros(
                                 registrarParqueaderoTemplate.getTnVMPMCamperos().getText().trim(), 3)) {
                     cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnVMPMCamperos().getText());
                     if (cantidad > 0) {
+                        contadorPrecios++;
                         tarifa = new Tarifa();
-                        tarifa.setTipoVehiculo("");
+                        tarifa.setIdTarifa(contadorPrecios);
+                        tarifa.setTipoVehiculo("Campero");
                         tarifa.setPrecioMaximoMinuto(cantidad);
+                        tarifas.add(tarifa);
                     } else {
                         registrarParqueaderoTemplate.getTnVMPMCamperos().setBorder(
                                 registrarParqueaderoTemplate.getsRecursos().getBordeRojo()
@@ -493,23 +566,33 @@ public class RegistrarParqueaderoComponent implements ActionListener,
                         registrarParqueaderoTemplate.getTnCamionetas().getText().trim(), 3)) {
             cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnCamionetas().getText());
             if (cantidad > 0) {
+                contadorAreas++;
                 area = new Area();
-                area.setTipoVehiculo("Camionetas");
+                area.setIdArea(contadorAreas);
+                area.setCantidadCupos(cantidad);
+                area.setCantidadCuposDisponibles(cantidad);
+                area.setTipoVehiculo("Camioneta");
+                espacios = new ArrayList<Espacio>();
                 for (int i = 0; i < cantidad; i++) {
                     espacio = new Espacio();
                     espacio.setEstado(true);
-                    espacio.setIdEspacio(cantidad);
-                    area.agregarEspacio(espacio);
+                    espacio.setIdEspacio(i + 1);
+                    espacios.add(espacio);
                 }
+                area.setEspacios(espacios);
+                areas.add(area);
                 if (!registrarParqueaderoTemplate.getTnVMPMCamionetas().getText().equals("Valor Máximo Por Minuto de Camionetas")
                         && !registrarParqueaderoTemplate.getTnVMPMCamionetas().getText().equals("")
                         && vistaPrincipalComponent.validarNumeros(
                                 registrarParqueaderoTemplate.getTnVMPMCamionetas().getText().trim(), 3)) {
                     cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnVMPMCamionetas().getText());
                     if (cantidad > 0) {
+                        contadorPrecios++;
                         tarifa = new Tarifa();
-                        tarifa.setTipoVehiculo("");
+                        tarifa.setIdTarifa(contadorPrecios);
+                        tarifa.setTipoVehiculo("Camioneta");
                         tarifa.setPrecioMaximoMinuto(cantidad);
+                        tarifas.add(tarifa);
                     } else {
                         registrarParqueaderoTemplate.getTnVMPMCamionetas().setBorder(
                                 registrarParqueaderoTemplate.getsRecursos().getBordeRojo()
@@ -541,23 +624,33 @@ public class RegistrarParqueaderoComponent implements ActionListener,
                         registrarParqueaderoTemplate.getTnVehiculosPesados().getText().trim(), 3)) {
             cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnVehiculosPesados().getText());
             if (cantidad > 0) {
+                contadorAreas++;
                 area = new Area();
-                area.setTipoVehiculo("Vehiculos Pesados");
+                area.setIdArea(contadorAreas);
+                area.setCantidadCupos(cantidad);
+                area.setCantidadCuposDisponibles(cantidad);
+                area.setTipoVehiculo("Vehiculo Pesado");
+                espacios = new ArrayList<Espacio>();
                 for (int i = 0; i < cantidad; i++) {
                     espacio = new Espacio();
                     espacio.setEstado(true);
-                    espacio.setIdEspacio(cantidad);
-                    area.agregarEspacio(espacio);
+                    espacio.setIdEspacio(i + 1);
+                    espacios.add(espacio);
                 }
+                area.setEspacios(espacios);
+                areas.add(area);
                 if (!registrarParqueaderoTemplate.getTnVMPMVehiculosPesados().getText().equals("Valor Máximo Por Minuto de Vehículos Pesados")
                         && !registrarParqueaderoTemplate.getTnVMPMVehiculosPesados().getText().equals("")
                         && vistaPrincipalComponent.validarNumeros(
                                 registrarParqueaderoTemplate.getTnVMPMVehiculosPesados().getText().trim(), 3)) {
                     cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnVMPMVehiculosPesados().getText());
                     if (cantidad > 0) {
+                        contadorPrecios++;
                         tarifa = new Tarifa();
-                        tarifa.setTipoVehiculo("");
+                        tarifa.setIdTarifa(contadorPrecios);
+                        tarifa.setTipoVehiculo("Vehiculo Pesado");
                         tarifa.setPrecioMaximoMinuto(cantidad);
+                        tarifas.add(tarifa);
                     } else {
                         registrarParqueaderoTemplate.getTnVMPMVehiculosPesados().setBorder(
                                 registrarParqueaderoTemplate.getsRecursos().getBordeRojo()
@@ -589,23 +682,33 @@ public class RegistrarParqueaderoComponent implements ActionListener,
                         registrarParqueaderoTemplate.getTnMotocicletas().getText().trim(), 3)) {
             cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnMotocicletas().getText());
             if (cantidad > 0) {
+                contadorAreas++;
                 area = new Area();
-                area.setTipoVehiculo("Motocicletas");
+                area.setIdArea(contadorAreas);
+                area.setCantidadCupos(cantidad);
+                area.setCantidadCuposDisponibles(cantidad);
+                area.setTipoVehiculo("Motocicleta");
+                espacios = new ArrayList<Espacio>();
                 for (int i = 0; i < cantidad; i++) {
                     espacio = new Espacio();
                     espacio.setEstado(true);
-                    espacio.setIdEspacio(cantidad);
-                    area.agregarEspacio(espacio);
+                    espacio.setIdEspacio(i + 1);
+                    espacios.add(espacio);
                 }
+                area.setEspacios(espacios);
+                areas.add(area);
                 if (!registrarParqueaderoTemplate.getTnVMPMMotocicletas().getText().equals("Valor Máximo Por Minuto de Motocicletas")
                         && !registrarParqueaderoTemplate.getTnVMPMMotocicletas().equals("")
                         && vistaPrincipalComponent.validarNumeros(
                                 registrarParqueaderoTemplate.getTnVMPMMotocicletas().getText().trim(), 3)) {
                     cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnVMPMMotocicletas().getText());
                     if (cantidad > 0) {
+                        contadorPrecios++;
                         tarifa = new Tarifa();
-                        tarifa.setTipoVehiculo("");
+                        tarifa.setIdTarifa(contadorPrecios);
+                        tarifa.setTipoVehiculo("Motocicleta");
                         tarifa.setPrecioMaximoMinuto(cantidad);
+                        tarifas.add(tarifa);
                     } else {
                         registrarParqueaderoTemplate.getTnVMPMMotocicletas().setBorder(
                                 registrarParqueaderoTemplate.getsRecursos().getBordeRojo()
@@ -637,23 +740,33 @@ public class RegistrarParqueaderoComponent implements ActionListener,
                         registrarParqueaderoTemplate.getTnBicicletas().getText().trim(), 3)) {
             cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnBicicletas().getText());
             if (cantidad > 0) {
+                contadorAreas++;
                 area = new Area();
-                area.setTipoVehiculo("Bicicletas");
+                area.setIdArea(contadorAreas);
+                area.setCantidadCupos(cantidad);
+                area.setCantidadCuposDisponibles(cantidad);
+                area.setTipoVehiculo("Bicicleta");
+                espacios = new ArrayList<Espacio>();
                 for (int i = 0; i < cantidad; i++) {
                     espacio = new Espacio();
                     espacio.setEstado(true);
-                    espacio.setIdEspacio(cantidad);
-                    area.agregarEspacio(espacio);
+                    espacio.setIdEspacio(i + 1);
+                    espacios.add(espacio);
                 }
+                area.setEspacios(espacios);
+                areas.add(area);
                 if (!registrarParqueaderoTemplate.getTnVMPMBicicletas().getText().equals("Valor Máximo Por Minuto de Bicicletas")
                         && !registrarParqueaderoTemplate.getTnVMPMBicicletas().getText().equals("")
                         && vistaPrincipalComponent.validarNumeros(
                                 registrarParqueaderoTemplate.getTnVMPMBicicletas().getText().trim(), 3)) {
                     cantidad = Integer.parseInt(registrarParqueaderoTemplate.getTnVMPMBicicletas().getText());
                     if (cantidad > 0) {
+                        contadorPrecios++;
                         tarifa = new Tarifa();
-                        tarifa.setTipoVehiculo("");
+                        tarifa.setIdTarifa(contadorPrecios);
+                        tarifa.setTipoVehiculo("Bicicleta");
                         tarifa.setPrecioMaximoMinuto(cantidad);
+                        tarifas.add(tarifa);
                     } else {
                         registrarParqueaderoTemplate.getTnVMPMBicicletas().setBorder(
                                 registrarParqueaderoTemplate.getsRecursos().getBordeRojo()
@@ -677,7 +790,8 @@ public class RegistrarParqueaderoComponent implements ActionListener,
             JOptionPane.showMessageDialog(null, "Introduzca una cantidad de Bicicletas", "Advertencia", 1);
             return false;
         }
-
+        parqueadero.setAreas(areas);
+        parqueadero.setTarifas(tarifas);
         return true;
     }
 
@@ -736,6 +850,3 @@ public class RegistrarParqueaderoComponent implements ActionListener,
     }
 
 }
-
-//se cambia registro de pago y factura por registro de salida
-//se cambia registro de coordinador por cambio de estado

@@ -51,7 +51,7 @@ public class RecursosService {
         fontSeccion = new Font("book antiqua", Font.PLAIN, 40);
         fontComponente = new Font("book antiqua", Font.PLAIN, 20);
         fontLogo = new Font("Arial", Font.PLAIN, 100);
-        fontLigera = new Font("LuzSans-Book", Font.PLAIN, 12);
+        fontLigera = new Font("Arial Rounded MT Bold", Font.PLAIN, 15);
 
         cMano = new Cursor(Cursor.HAND_CURSOR);
 
