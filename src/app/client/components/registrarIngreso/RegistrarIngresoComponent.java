@@ -26,6 +26,22 @@ public class RegistrarIngresoComponent implements ActionListener, MouseListener,
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("Buscar")){
+            registrarIngresoTemplate.getlTipo().setVisible(true);
+            registrarIngresoTemplate.getCbTipo().setVisible(true);
+            registrarIngresoTemplate.getlHoraIng().setVisible(true);
+            registrarIngresoTemplate.getlHoraIng2().setVisible(true);
+            registrarIngresoTemplate.getlFechaIng().setVisible(true);
+            registrarIngresoTemplate.getlFechaIng2().setVisible(true);
+            registrarIngresoTemplate.getlCuposDisponibles().setVisible(true);
+            registrarIngresoTemplate.getlCupo().setVisible(true);
+            registrarIngresoTemplate.gettCupo().setVisible(true);
+            registrarIngresoTemplate.getBtnRegistrar().setVisible(true);
+
+        }
+        if (e.getActionCommand().equals("Registrar")){
+
+        }
     }
 
     @Override
