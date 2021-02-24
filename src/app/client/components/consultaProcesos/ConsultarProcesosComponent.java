@@ -8,7 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
+import util.CaException;
 
 public class ConsultarProcesosComponent implements ActionListener, MouseListener {
 
@@ -42,19 +46,42 @@ public class ConsultarProcesosComponent implements ActionListener, MouseListener
             botonSeleccionado = boton;
             consultarProcesosTemplate.getpInferior().removeAll();            
             if (boton == consultarProcesosTemplate.getbVehiculos()) {
-                consultaVehiculosComponent = new ConsultaVehiculosComponent(this);
+                if (consultaVehiculosComponent == null) {
+                    consultaVehiculosComponent = new ConsultaVehiculosComponent(this);
+                }
+                try {
+                    consultaVehiculosComponent.actualizarTabla();
+                } catch (CaException | SQLException ex) {
+                    Logger.getLogger(ConsultarProcesosComponent.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 consultarProcesosTemplate.getpInferior().add(
                         consultaVehiculosComponent.getConsultaVehiculosTemplate()
                 );
             }
             if (boton == consultarProcesosTemplate.getbParqueaderos()) {
-                consultaParqueaderosComponent = new ConsultaParqueaderosComponent(this);
+                if (consultaParqueaderosComponent == null) {
+                    consultaParqueaderosComponent = new ConsultaParqueaderosComponent(this);
+                }
+                try {
+                    consultaParqueaderosComponent.actualizarTabla();
+                } catch (CaException | SQLException ex) {
+                    Logger.getLogger(ConsultarProcesosComponent.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 consultarProcesosTemplate.crearScrollpane(
                         consultaParqueaderosComponent.getConsultaParqueaderosTemplate()
                 );
             }
             if (boton == consultarProcesosTemplate.getbContratos()) {
-                consultaContratosComponent = new ConsultaContratosComponent(this);
+                if (consultaContratosComponent == null) {
+                    consultaContratosComponent = new ConsultaContratosComponent(this);
+                }
+                try {
+                    consultaContratosComponent.actualizarTabla();
+                } catch (CaException ex) {
+                    Logger.getLogger(ConsultarProcesosComponent.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ConsultarProcesosComponent.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 consultarProcesosTemplate.crearScrollpane(
                         consultaContratosComponent.getConsultaContratosTemplate()
                 );

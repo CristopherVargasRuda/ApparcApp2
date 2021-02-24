@@ -1,5 +1,7 @@
 package negocio.models;
 
+import java.util.ArrayList;
+
 public class Tarifa {
 
     private int idTarifa, precioMaximoMinuto;
@@ -30,6 +32,10 @@ public class Tarifa {
 
     public void setTipoVehiculo(String tipoVehiculo) {
         this.tipoVehiculo = tipoVehiculo;
+    }
+
+    public void add(ArrayList<Tarifa> tarifas) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

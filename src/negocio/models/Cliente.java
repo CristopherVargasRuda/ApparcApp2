@@ -5,6 +5,7 @@ public class Cliente {
     private String primerNombre, segundoNombre, primerApellido, segundoApellido, 
             sexo, tipoIdentificacion, direccion;
     private int identificacionCliente;
+
     private float telefono;
 
     public String getPrimerNombre() {
@@ -78,5 +79,5 @@ public class Cliente {
     public void setTelefono(float telefono) {
         this.telefono = telefono;
     }
-    
+
 }

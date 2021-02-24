@@ -4,11 +4,20 @@ import java.util.ArrayList;
 
 public class Parqueadero {
 
-    private ArrayList<Area> areas = new ArrayList<Area>();
+    private ArrayList<Area> areas = new ArrayList<>();
+    private ArrayList<Tarifa> tarifas = new ArrayList<>();
+    private ArrayList<Contrato> contratos = new ArrayList<>();
     private String nombre, clave, direccion, localidad, tipoSuelo;
     private int cantidadNiveles, codigo;
     private boolean estado, subterraneo;
     private float factorDemandaZonal;
+    
+    public Parqueadero() {
+    }
+    
+    public void agregarContrato(Contrato contrato){
+        contratos.add(contrato);
+    }
 
     public int getCodigo() {
         return codigo;
@@ -17,9 +26,7 @@ public class Parqueadero {
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
-    
-    public Parqueadero() {
-    }
+
 
     public void agregarArea(Area area) {
 
@@ -72,7 +79,7 @@ public class Parqueadero {
     public void setFactorDemandaZonal(float factorDemandaZonal) {
         this.factorDemandaZonal = factorDemandaZonal;
     }
-    
+
     public int getCantidadNiveles() {
         return cantidadNiveles;
     }
@@ -105,4 +112,21 @@ public class Parqueadero {
         this.areas = areas;
     }
 
+    public ArrayList<Tarifa> getTarifas() {
+        return tarifas;
+    }
+
+    public void setTarifas(ArrayList<Tarifa> tarifas) {
+        this.tarifas = tarifas;
+    }
+
+    public ArrayList<Contrato> getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(ArrayList<Contrato> contratos) {
+        this.contratos = contratos;
+    }
+
+    
 }

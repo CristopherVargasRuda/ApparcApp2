@@ -8,8 +8,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import javax.swing.JButton;
 import negocio.models.Parqueadero;
+import util.CaException;
 
 public class ConsultaParqueaderosComponent implements ActionListener, MouseListener, FocusListener {
 
@@ -21,6 +23,7 @@ public class ConsultaParqueaderosComponent implements ActionListener, MouseListe
     private JButton boton;
 
     public ConsultaParqueaderosComponent(ConsultarProcesosComponent consultarProcesosComponent) {
+        controlParqueaderos = new ControlTablaParqueaderos();
         this.consultarProcesosComponent = consultarProcesosComponent;
         consultaParqueaderosTemplate = new ConsultaParqueaderosTemplate(this);
     }
@@ -61,6 +64,11 @@ public class ConsultaParqueaderosComponent implements ActionListener, MouseListe
     public void focusLost(FocusEvent e) {
     }
 
+    public void actualizarTabla() throws CaException, SQLException {
+        controlParqueaderos.cargarParqueadero();
+        this.mostrarRegistrosTabla();
+    }
+    
     public void mostrarRegistrosTabla() {
         for (int i = 0; i < controlParqueaderos.devolverCantidadParqueaderos(); i++) {
             parqueadero = controlParqueaderos.devolverParqueadero(i);
@@ -79,7 +87,7 @@ public class ConsultaParqueaderosComponent implements ActionListener, MouseListe
             estado = "Cerrado";
         }
         direccion = parqueadero.getDireccion();
-        localidad = parqueadero.getTipoSuelo();
+        localidad = parqueadero.getLocalidad();
         if (parqueadero.isSubterraneo()) {
             tipoParqueadero = "Subterraneo";
         } else {

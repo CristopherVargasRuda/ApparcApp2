@@ -161,9 +161,9 @@ public class EstadisticaRecaudoTemplate extends JPanel {
         tabla.setDefaultRenderer(
                 Object.class,
                 sGraficosAvanzados.devolverTablaPersonalizada(
-                        Color.WHITE, sRecursos.getColorGrisClaro(),
+                        Color.WHITE, sRecursos.getColorNavegacionFondo(),
                         sRecursos.getColorNaranja(),
-                        sRecursos.getColorGrisOscuro(),
+                        Color.BLACK,
                         sRecursos.getFontLigera()
                 )
         );

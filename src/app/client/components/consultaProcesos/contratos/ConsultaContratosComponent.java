@@ -8,8 +8,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import javax.swing.JButton;
 import negocio.models.Contrato;
+import util.CaException;
 
 public class ConsultaContratosComponent implements ActionListener, MouseListener, FocusListener {
 
@@ -21,6 +23,7 @@ public class ConsultaContratosComponent implements ActionListener, MouseListener
     private JButton boton;
 
     public ConsultaContratosComponent(ConsultarProcesosComponent consultarProcesosComponent) {
+        controlTablaContratos = new ControlTablaContratos();
         this.consultarProcesosComponent = consultarProcesosComponent;
         consultaContratosTemplate = new ConsultaContratosTemplate(this);
     }
@@ -61,6 +64,11 @@ public class ConsultaContratosComponent implements ActionListener, MouseListener
     public void focusLost(FocusEvent e) {
     }
 
+    public void actualizarTabla() throws CaException, SQLException {
+        controlTablaContratos.cargarContrato();
+        this.mostrarRegistrosTabla();
+    }
+    
     public void mostrarRegistrosTabla() {
         for (int i = 0; i < controlTablaContratos.devolverCantidadContratos(); i++) {
             contrato = controlTablaContratos.devolverContrato(i);
@@ -77,12 +85,9 @@ public class ConsultaContratosComponent implements ActionListener, MouseListener
         fechaFinal = contrato.getFechaFin();
         periodo = contrato.getPeriodo();
         nombreCliente = contrato.getCliente().getPrimerNombre()
-                + contrato.getCliente().getSegundoNombre()
-                + contrato.getCliente().getPrimerApellido()
-                + contrato.getCliente().getSegundoApellido();
+                + " " + contrato.getCliente().getPrimerApellido();
         identificacionCliente = contrato.getCliente().getIdentificacionCliente()+"";
-        placaVehiculo = contrato.getVehiculo().getPlaca();
-        
+        placaVehiculo = contrato.getPlaca();
         consultaContratosTemplate.getModelo().addRow(
                 new Object[]{idContrato, valorPago, fechaInicio, fechaFinal, 
                     periodo, nombreCliente, identificacionCliente, placaVehiculo                    

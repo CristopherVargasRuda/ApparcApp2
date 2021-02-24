@@ -38,7 +38,7 @@ public class ConsultaParqueaderosTemplate extends JPanel {
 
         this.setBorder(sRecursos.getBordeNegro());
         this.setBackground(sRecursos.getColorAzulOscuro());
-        this.setPreferredSize(new Dimension(1500, 460));
+        this.setPreferredSize(new Dimension(2500, 460));
         this.setLayout(null);
         this.setVisible(true);
     }
@@ -57,7 +57,7 @@ public class ConsultaParqueaderosTemplate extends JPanel {
         header = tabla.getTableHeader();
         header.setPreferredSize(new Dimension(800, 30));
 
-        pTabla = sObjGraficos.construirPanelBarra(tabla, 50, 50, 1400, 380, Color.WHITE, null);
+        pTabla = sObjGraficos.construirPanelBarra(tabla, 50, 50, 2400, 380, Color.WHITE, null);
 
         header.setDefaultRenderer(
                 sGraficosAvanzados.devolverTablaPersonalizada(
@@ -69,9 +69,9 @@ public class ConsultaParqueaderosTemplate extends JPanel {
         tabla.setDefaultRenderer(
                 Object.class,
                 sGraficosAvanzados.devolverTablaPersonalizada(
-                        Color.WHITE, sRecursos.getColorGrisClaro(),
+                        Color.WHITE, sRecursos.getColorNavegacionFondo(),
                         sRecursos.getColorNaranja(),
-                        sRecursos.getColorGrisOscuro(),
+                        Color.BLACK,
                         sRecursos.getFontLigera()
                 )
         );

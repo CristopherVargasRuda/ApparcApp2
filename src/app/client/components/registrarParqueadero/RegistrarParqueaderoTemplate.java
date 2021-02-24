@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 
 public class RegistrarParqueaderoTemplate extends JPanel {
 
+   
     private RegistrarParqueaderoComponent registrarParqueaderoComponent;
     private ObjGraficosService sObjGraficos;
     private RecursosService sRecursos;
@@ -21,12 +22,12 @@ public class RegistrarParqueaderoTemplate extends JPanel {
             lMotocicletas, lBicicletas, lNombreParqueadero, lClave, lElevacion,
             lLocalidad, lNumeroNiveles, lTipoSuelo, lFactorDemandaZonal, 
             lVMPMAutomoviles, lVMPMCamperos, lVMPMCamionetas, lVMPMBicicletas,
-            lVMPMVehiculosPesados, lVMPMMotocicletas;            
+            lVMPMVehiculosPesados, lVMPMMotocicletas, lCodigoParqueadero;            
     private JTextField tNombreParqueadero, tClaveParqueadero, tDireccion, 
             tnNiveles, tnAutomoviles, tnCamperos, tnCamionetas, 
             tnVehiculosPesados, tnMotocicletas, tnBicicletas, tnVMPMAutomoviles, 
             tnVMPMCamperos, tnVMPMCamionetas, tnVMPMVehiculosPesados, 
-            tnVMPMMotocicletas, tnVMPMBicicletas;
+            tnVMPMMotocicletas, tnVMPMBicicletas, tCodigoParqueadero;
     private JComboBox cbTipoSuelo, cbLocalidad, cbFactorDemandaZonal,
             cbTipoParqueadero, cbEstado;
     private JButton bRegistrarParqueadero, bLimpiar;
@@ -49,6 +50,16 @@ public class RegistrarParqueaderoTemplate extends JPanel {
     }
 
     public void crearJTextFields() {
+        // NOMBRE PARQUEADERO ----------------------------------------------
+        tCodigoParqueadero = sObjGraficos.construirJTextField(
+                "Código del parqueadero", 350, 160, 470, 40, null, Color.WHITE,
+                sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c"
+        );
+        tCodigoParqueadero.setBorder(sRecursos.getBordeNaranja());
+        tCodigoParqueadero.addFocusListener(registrarParqueaderoComponent);
+        this.add(tCodigoParqueadero);
+        
+        
         // NOMBRE PARQUEADERO ----------------------------------------------
         tNombreParqueadero = sObjGraficos.construirJTextField(
                 "Nombre del parqueadero", 350, 230, 470, 40, null, Color.WHITE,
@@ -267,7 +278,7 @@ public class RegistrarParqueaderoTemplate extends JPanel {
 
         // FACTOR DEMANDA ZONAL ----------------------------------------------
         cbFactorDemandaZonal = sObjGraficos.construirJComboBox(
-                "Seleccione una opción_0,8_1", 350, 720, 470, 40, Color.WHITE,
+                "Seleccione una opción_0.8_1.0", 350, 720, 470, 40, Color.WHITE,
                 Color.BLACK, "c"
         );
         cbFactorDemandaZonal.setFont(sRecursos.getFontText());
@@ -295,13 +306,20 @@ public class RegistrarParqueaderoTemplate extends JPanel {
         );
         this.add(lTitulo);
 
-        // DATOS BÁSICOS ------------------------------------------------------
+        /*// DATOS BÁSICOS ------------------------------------------------------
         lDatosBasicos = sObjGraficos.construirJLabel(
                 "Datos Básicos", 0, 150, 880, 40, null, Color.WHITE, null,
                 sRecursos.getFontSeccion(), "c"
         );
-        this.add(lDatosBasicos);
+        this.add(lDatosBasicos);*/
 
+        // NOMBRE PARQUEADERO -------------------------------------------------
+        lCodigoParqueadero = sObjGraficos.construirJLabel(
+                "Código Parqueadero:", 50, 160, 260, 40, null, Color.WHITE, null,
+                sRecursos.getFontComponente(), "l"
+        );
+        this.add(lCodigoParqueadero);
+        
         // NOMBRE PARQUEADERO -------------------------------------------------
         lNombreParqueadero = sObjGraficos.construirJLabel(
                 "Nombre Parqueadero:", 50, 230, 260, 40, null, Color.WHITE, null,
@@ -569,6 +587,10 @@ public class RegistrarParqueaderoTemplate extends JPanel {
 
     public JTextField getTnVMPMBicicletas() {
         return tnVMPMBicicletas;
+    }
+
+    public JTextField gettCodigoParqueadero() {
+        return tCodigoParqueadero;
     }
 
     

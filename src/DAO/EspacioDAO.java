@@ -19,6 +19,28 @@ public class EspacioDAO {
         espacio = new Espacio();
     }
 
+    public void registrarEspacio(int codigoParqueadero, int codigoArea) throws CaException{
+        
+        String sql = "INSERT INTO espacio(k_idEspacio, i_estado, "
+                + "k_codigoParqueadero, k_idArea) VALUES (?, ?, ?, ?)";
+        ResultSet rs;
+        try {
+            Connection conexion = ServiceLocator.getInstance().tomarConexion();
+            PreparedStatement prepStmt = conexion.prepareStatement(sql);
+            prepStmt.setInt(1, espacio.getIdEspacio());
+            prepStmt.setBoolean(2, espacio.isEstado());
+            prepStmt.setInt(3, codigoParqueadero);
+            prepStmt.setInt(4, codigoArea);
+            prepStmt.executeUpdate();
+            prepStmt.close();
+            ServiceLocator.getInstance().commit();
+
+        } catch (SQLException e) {
+            throw new CaException("ParqueaderoDAO", "No se puede insertar los datos del  parqueadero" + e.getMessage());
+        } finally {
+            ServiceLocator.getInstance().liberarConexion();
+        }
+    }
  
     public void buscarEspacios(int codigoParqueadero, int codigoArea) throws CaException {
         String sql = "SELECT k_idespacio, i_estado FROM area a, parqueadero p, "
