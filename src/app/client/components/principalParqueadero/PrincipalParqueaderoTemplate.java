@@ -228,7 +228,7 @@ public class PrincipalParqueaderoTemplate extends JPanel {
     public void setLocalidad(String localidad) {
         lLocalidad.setText(localidad);
     }
-    public void setDirección(String direccion) {
+    public void setDireccion(String direccion) {
         lDireccion.setText(direccion);
     }
     public void setTipoParqueadero(String tipoParqueadero) {

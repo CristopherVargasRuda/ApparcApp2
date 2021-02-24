@@ -29,7 +29,7 @@ public class PrincipalParqueaderoComponent implements ActionListener, MouseListe
         String nombreParqueadero = " ";
         String tipoParqueadero = " ";
         String localidad = " ";
-        String dirección = " ";
+        String direccion = " ";
         String tipoSuelo = " ";
         int cantidadNiveles = 0;
         String factorZonal = " ";
@@ -38,7 +38,7 @@ public class PrincipalParqueaderoComponent implements ActionListener, MouseListe
         principal.setTitulo(nombreParqueadero);
         principal.setTipoParqueadero(tipoParqueadero);
         principal.setLocalidad(localidad);
-        principal.setDirección(dirección);
+        principal.setDireccion(direccion);
         principal.setTipoSuelo(tipoSuelo);
         principal.setCantidadNiveles(cantidadNiveles);
         principal.setFactorDemandaZonal(factorZonal);

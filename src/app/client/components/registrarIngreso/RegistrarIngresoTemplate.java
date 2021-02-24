@@ -19,9 +19,11 @@ public class RegistrarIngresoTemplate extends JPanel {
 
     private Date date;
     private DateFormat dateFormat, hourFormat, hourDateFormat;
-    private JLabel lTitulo, lDatosVehiculo, lPlaca, lTipo, lContrato, lCupo, lFechaIng, lHoraIng, lFechaIng2, lHoraIng2;
+    private JLabel lTitulo, lDatosVehiculo, lPlaca, lTipo, lContrato, lCupo, lFechaIng, lHoraIng, lFechaIng2, lHoraIng2,
+            lCuposDisponibles;
     private JTextField tPlaca, tCupo;
-    private JComboBox cbTipo, cbDiaInicio, cbMesInicio, cbAnioInicio, cbHora, cbMinuto, cbAmPm;
+    private JComboBox cbTipo;
+    private JButton btnBuscar, btnRegistrar;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -34,8 +36,8 @@ public class RegistrarIngresoTemplate extends JPanel {
         sRecursos = RecursosService.getService();
         date = new Date();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        hourFormat = new SimpleDateFormat("HH:mm:ss a");
-        hourDateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+        hourFormat = new SimpleDateFormat("hh:mm:ss a");
+        hourDateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
         estado = 1;
 
         this.crearObjetosDecoradores();
@@ -54,7 +56,6 @@ public class RegistrarIngresoTemplate extends JPanel {
                 if(estado == 1){
                     date = new Date();
                     lHoraIng2.setText(hourFormat.format(date));
-                    System.out.println(hourFormat.format(date));
                 }else{
 
                 }
@@ -82,7 +83,7 @@ public class RegistrarIngresoTemplate extends JPanel {
 
         // PLACA -------------------------------------------------------------------------------------------------------
         tPlaca = sObjGraficos.construirJTextField(
-                "Placa del vehículo", 390, 240, 350, 40, null, Color.WHITE,
+                "Placa del vehículo", 270, 240, 350, 40, null, Color.WHITE,
                 sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c"
         );
         tPlaca.setBorder(sRecursos.getBordeNaranja());
@@ -90,12 +91,13 @@ public class RegistrarIngresoTemplate extends JPanel {
         this.add(tPlaca);
         // CUPO -------------------------------------------------------------------------------------------------------
         tCupo = sObjGraficos.construirJTextField(
-                "Cupo", 520, 530, 100, 40, null, Color.WHITE,
+                "Cupo", 520, 620, 100, 40, null, Color.WHITE,
                 sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c"
         );
         tCupo.setBorder(sRecursos.getBordeNaranja());
         tCupo.addFocusListener(registrarIngresoComponent);
         this.add(tCupo);
+        tCupo.setVisible(false);
     }
 
     public void crearJPasswordFields(){
@@ -104,23 +106,30 @@ public class RegistrarIngresoTemplate extends JPanel {
 
     public void crearJButtons(){
 
+        btnBuscar = sObjGraficos.construirJButton("Buscar", 650, 240, 200, 50, sRecursos.getcMano(), null, sRecursos.getFontBoton(), sRecursos.getColorNaranja(), Color.WHITE, null, "c", true);
+        btnBuscar.addActionListener(registrarIngresoComponent);
+        btnBuscar.addMouseListener(registrarIngresoComponent);
+        this.add(btnBuscar);
+
+        btnRegistrar = sObjGraficos.construirJButton("Registrar", 350, 680, 200, 50, sRecursos.getcMano(), null, sRecursos.getFontBoton(), sRecursos.getColorNaranja(), Color.WHITE, null, "c", true);
+        btnRegistrar.addActionListener(registrarIngresoComponent);
+        btnRegistrar.addMouseListener(registrarIngresoComponent);
+        this.add(btnRegistrar);
+        btnRegistrar.setVisible(false);
     }
 
     public void crearJComboBox() {
 
         cbTipo = sObjGraficos.construirJComboBox(
                 "Tipo_Automóvil_Campero_Camioneta_Vehículo Pesado_Motocicleta_Bicicleta"
-                , 390, 320, 350, 40, Color.WHITE, Color.BLACK, "c"
+                , 390, 340, 350, 40, Color.WHITE, Color.BLACK, "c"
         );
         cbTipo.setFont(sRecursos.getFontText());
         cbTipo.setBorder(BorderFactory.createLineBorder(sRecursos.getColorNaranja(), 1));
         cbTipo.addFocusListener(registrarIngresoComponent);
         this.add(cbTipo);
+        cbTipo.setVisible(false);
 
-        String texto = "";
-        for (int i=0; i<32; i++){
-            texto = texto + "_" + i;
-        }
     }
 
     public void crearJLabels(){
@@ -142,51 +151,65 @@ public class RegistrarIngresoTemplate extends JPanel {
 
         // Creacion PLACA ----------------------------------------------------------------------------------------------
         lPlaca = sObjGraficos.construirJLabel(
-                "Placa del vehículo:", 170, 250, 260, 40, null, Color.WHITE, null,
+                "Placa del vehículo:", 70, 250, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lPlaca);
 
         // Creacion TIPO -----------------------------------------------------------------------------------------------
         lTipo = sObjGraficos.construirJLabel(
-                "Tipo de vehiculo:", 170, 320, 260, 40, null, Color.WHITE, null,
+                "Tipo de vehiculo:", 170, 340, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lTipo);
+        lTipo.setVisible(false);
 
         // Creacion FECHA DE INGRESO -----------------------------------------------------------------------------------
         lFechaIng = sObjGraficos.construirJLabel(
-                "Fecha de Ingreso:", 170, 390, 260, 40, null, Color.WHITE, null,
+                "Fecha de Ingreso:", 170, 410, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lFechaIng);
+        lFechaIng.setVisible(false);
 
         // Creacion HORA DE INGRESO ------------------------------------------------------------------------------------
         lHoraIng = sObjGraficos.construirJLabel(
-                "Hora de Ingreso:", 170, 460, 260, 40, null, Color.WHITE, null,
+                "Hora de Ingreso:", 170, 480, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lHoraIng);
+        lHoraIng.setVisible(false);
 
         // Creacion FECHA DE INGRESO 2 -----------------------------------------------------------------------------------
         lFechaIng2 = sObjGraficos.construirJLabel(
-                dateFormat.format(date), 512, 390, 260, 40, null, Color.WHITE, null,
+                dateFormat.format(date), 512, 410, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lFechaIng2);
+        lFechaIng2.setVisible(false);
 
         // Creacion HORA DE INGRESO 2 ------------------------------------------------------------------------------------
-        lHoraIng2 = sObjGraficos.construirJLabel(hourFormat.format(date), 510, 460, 260, 40, null, Color.WHITE, null,
+        lHoraIng2 = sObjGraficos.construirJLabel(hourFormat.format(date), 510, 480, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lHoraIng2);
+        lHoraIng2.setVisible(false);
+
+        // Creacion CUPOS DISPONIBLES ----------------------------------------------------------------------------------
+        lCuposDisponibles = sObjGraficos.construirJLabel(
+                "Cupos Disponibles:", 170, 550, 260, 40, null, Color.WHITE, null,
+                sRecursos.getFontComponente(), "d"
+        );
+        this.add(lCuposDisponibles);
+        lCuposDisponibles.setVisible(false);
 
         // Creacion CUPO ASIGNADO --------------------------------------------------------------------------------------
         lCupo = sObjGraficos.construirJLabel(
-                "Cupo asignado:", 170, 530, 260, 40, null, Color.WHITE, null,
-                sRecursos.getFontComponente(), "l"
+                "Cupo asignado:", 170, 620, 260, 40, null, Color.WHITE, null,
+                sRecursos.getFontComponente(), "d"
         );
         this.add(lCupo);
+        lCupo.setVisible(false);
     }
 
     public RegistrarIngresoComponent getRegistrarIngresoComponent() {
@@ -207,5 +230,93 @@ public class RegistrarIngresoTemplate extends JPanel {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    public JLabel getlTipo() {
+        return lTipo;
+    }
+
+    public void setlTipo(JLabel lTipo) {
+        this.lTipo = lTipo;
+    }
+
+    public JLabel getlContrato() {
+        return lContrato;
+    }
+
+    public void setlContrato(JLabel lContrato) {
+        this.lContrato = lContrato;
+    }
+
+    public JLabel getlCupo() {
+        return lCupo;
+    }
+
+    public void setlCupo(JLabel lCupo) {
+        this.lCupo = lCupo;
+    }
+
+    public JLabel getlFechaIng() {
+        return lFechaIng;
+    }
+
+    public void setlFechaIng(JLabel lFechaIng) {
+        this.lFechaIng = lFechaIng;
+    }
+
+    public JLabel getlHoraIng() {
+        return lHoraIng;
+    }
+
+    public void setlHoraIng(JLabel lHoraIng) {
+        this.lHoraIng = lHoraIng;
+    }
+
+    public JLabel getlFechaIng2() {
+        return lFechaIng2;
+    }
+
+    public void setlFechaIng2(JLabel lFechaIng2) {
+        this.lFechaIng2 = lFechaIng2;
+    }
+
+    public JLabel getlHoraIng2() {
+        return lHoraIng2;
+    }
+
+    public void setlHoraIng2(JLabel lHoraIng2) {
+        this.lHoraIng2 = lHoraIng2;
+    }
+
+    public JTextField gettCupo() {
+        return tCupo;
+    }
+
+    public void settCupo(JTextField tCupo) {
+        this.tCupo = tCupo;
+    }
+
+    public JComboBox getCbTipo() {
+        return cbTipo;
+    }
+
+    public void setCbTipo(JComboBox cbTipo) {
+        this.cbTipo = cbTipo;
+    }
+
+    public JButton getBtnRegistrar() {
+        return btnRegistrar;
+    }
+
+    public void setBtnRegistrar(JButton btnRegistrar) {
+        this.btnRegistrar = btnRegistrar;
+    }
+
+    public JLabel getlCuposDisponibles() {
+        return lCuposDisponibles;
+    }
+
+    public void setlCuposDisponibles(JLabel lCuposDisponibles) {
+        this.lCuposDisponibles = lCuposDisponibles;
     }
 }
