@@ -19,11 +19,10 @@ public class RegistrarIngresoTemplate extends JPanel {
 
     private Date date;
     private DateFormat dateFormat, hourFormat, hourDateFormat;
-    private JLabel lTitulo, lDatosVehiculo, lPlaca, lTipo, lContrato, lCupo, lFechaIng, lHoraIng, lFechaIng2, lHoraIng2,
-            lCuposDisponibles;
+    private JLabel lTitulo, lDatosVehiculo, lPlaca, lTipo, lContrato, lCupo, lFechaIng, lHoraIng, lFechaIng2, lHoraIng2;
     private JTextField tPlaca, tCupo;
     private JComboBox cbTipo;
-    private JButton btnBuscar, btnRegistrar;
+    private JButton btnBuscar, btnRegistrar, btnLimpiar;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -88,10 +87,11 @@ public class RegistrarIngresoTemplate extends JPanel {
         );
         tPlaca.setBorder(sRecursos.getBordeNaranja());
         tPlaca.addFocusListener(registrarIngresoComponent);
+        tPlaca.addKeyListener(registrarIngresoComponent);
         this.add(tPlaca);
         // CUPO -------------------------------------------------------------------------------------------------------
         tCupo = sObjGraficos.construirJTextField(
-                "Cupo", 520, 620, 100, 40, null, Color.WHITE,
+                "Cupo", 520, 550, 100, 40, null, Color.WHITE,
                 sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c"
         );
         tCupo.setBorder(sRecursos.getBordeNaranja());
@@ -111,22 +111,29 @@ public class RegistrarIngresoTemplate extends JPanel {
         btnBuscar.addMouseListener(registrarIngresoComponent);
         this.add(btnBuscar);
 
-        btnRegistrar = sObjGraficos.construirJButton("Registrar", 350, 680, 200, 50, sRecursos.getcMano(), null, sRecursos.getFontBoton(), sRecursos.getColorNaranja(), Color.WHITE, null, "c", true);
+        btnRegistrar = sObjGraficos.construirJButton("Registrar", 460, 660, 200, 50, sRecursos.getcMano(), null, sRecursos.getFontBoton(), sRecursos.getColorNaranja(), Color.WHITE, null, "c", true);
         btnRegistrar.addActionListener(registrarIngresoComponent);
         btnRegistrar.addMouseListener(registrarIngresoComponent);
         this.add(btnRegistrar);
         btnRegistrar.setVisible(false);
+
+        btnLimpiar = sObjGraficos.construirJButton("Limpiar", 240, 660, 200, 50, sRecursos.getcMano(), null, sRecursos.getFontBoton(), sRecursos.getColorNaranja(), Color.WHITE, null, "c", true);
+        btnLimpiar.addActionListener(registrarIngresoComponent);
+        btnLimpiar.addMouseListener(registrarIngresoComponent);
+        this.add(btnLimpiar);
+        btnLimpiar.setVisible(false);
     }
 
     public void crearJComboBox() {
 
         cbTipo = sObjGraficos.construirJComboBox(
-                "Tipo_Automóvil_Campero_Camioneta_Vehículo Pesado_Motocicleta_Bicicleta"
+                "Tipo_Automovil_Campero_Camioneta_Vehiculo Pesado_Motocicleta_Bicicleta"
                 , 390, 340, 350, 40, Color.WHITE, Color.BLACK, "c"
         );
         cbTipo.setFont(sRecursos.getFontText());
         cbTipo.setBorder(BorderFactory.createLineBorder(sRecursos.getColorNaranja(), 1));
         cbTipo.addFocusListener(registrarIngresoComponent);
+        cbTipo.addItemListener(registrarIngresoComponent);
         this.add(cbTipo);
         cbTipo.setVisible(false);
 
@@ -195,17 +202,9 @@ public class RegistrarIngresoTemplate extends JPanel {
         this.add(lHoraIng2);
         lHoraIng2.setVisible(false);
 
-        // Creacion CUPOS DISPONIBLES ----------------------------------------------------------------------------------
-        lCuposDisponibles = sObjGraficos.construirJLabel(
-                "Cupos Disponibles:", 170, 550, 260, 40, null, Color.WHITE, null,
-                sRecursos.getFontComponente(), "d"
-        );
-        this.add(lCuposDisponibles);
-        lCuposDisponibles.setVisible(false);
-
         // Creacion CUPO ASIGNADO --------------------------------------------------------------------------------------
         lCupo = sObjGraficos.construirJLabel(
-                "Cupo asignado:", 170, 620, 260, 40, null, Color.WHITE, null,
+                "Cupo asignado:", 170, 550, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "d"
         );
         this.add(lCupo);
@@ -312,11 +311,27 @@ public class RegistrarIngresoTemplate extends JPanel {
         this.btnRegistrar = btnRegistrar;
     }
 
-    public JLabel getlCuposDisponibles() {
-        return lCuposDisponibles;
+    public JTextField gettPlaca() {
+        return tPlaca;
     }
 
-    public void setlCuposDisponibles(JLabel lCuposDisponibles) {
-        this.lCuposDisponibles = lCuposDisponibles;
+    public void settPlaca(JTextField tPlaca) {
+        this.tPlaca = tPlaca;
+    }
+
+    public JButton getBtnLimpiar() {
+        return btnLimpiar;
+    }
+
+    public void setBtnLimpiar(JButton btnLimpiar) {
+        this.btnLimpiar = btnLimpiar;
+    }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
+    public void setBtnBuscar(JButton btnBuscar) {
+        this.btnBuscar = btnBuscar;
     }
 }
