@@ -19,23 +19,39 @@ public class ParqueaderoDAO {
     }
 
     public void insertar() throws CaException {
- 
+
     }
 
     public void modificar() {
 
     }
 
-    public void eliminar() {
-
-    }
-
-    public void buscar() throws CaException {
-
-    }
-
-    public void actualizar() throws CaException {
-
+    public void buscarLogin(String nombre, String clave) throws CaException {
+        String sql = "SELECT * FROM  parqueadero WHERE n_nombreparqueadero = '"
+                + nombre + "' AND o_contrasenaparqueadero = '" + clave + "';";
+        ResultSet rs;
+        try {
+            Connection conexion = ServiceLocator.getInstance().tomarConexion();
+            PreparedStatement prepStmt = conexion.prepareStatement(sql);
+            rs = prepStmt.executeQuery();
+            
+            while (rs.next()) {
+                parqueadero.setCodigo(rs.getInt("k_codigoparqueadero"));
+                parqueadero.setNombre(rs.getString("n_nombreparqueadero"));
+                parqueadero.setDireccion(rs.getString("n_direccion"));
+                parqueadero.setLocalidad(rs.getString("n_localidad"));
+                parqueadero.setSubterraneo(rs.getBoolean("i_subterraneo"));
+                parqueadero.setCantidadNiveles(rs.getInt("q_cantidadniveles"));
+                parqueadero.setTipoSuelo(rs.getString("i_tiposuelo"));
+                parqueadero.setFactorDemandaZonal(rs.getFloat("i_factordemandazonal"));
+                parqueadero.setClave(rs.getString("o_contrasenaparqueadero"));
+                parqueadero.setEstado(rs.getBoolean("i_estadoparqueadero"));
+            }
+        } catch (SQLException e) {
+            throw new CaException("ParqueaderoDAO", "No se puede consultar los datos del  parqueadero" + e.getMessage());
+        } finally {
+            ServiceLocator.getInstance().liberarConexion();
+        }
     }
 
     public Parqueadero getParqueadero() {

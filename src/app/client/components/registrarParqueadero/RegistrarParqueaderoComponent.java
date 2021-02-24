@@ -360,7 +360,7 @@ public class RegistrarParqueaderoComponent implements ActionListener,
         seleccionComboBox = (String) registrarParqueaderoTemplate.getCbFactorDemandaZonal().getSelectedItem();
         if (!seleccionComboBox.equals("Seleccione una opción")
                 && !seleccionComboBox.equals("")) {
-            parqueadero.setNombre(seleccionComboBox.trim());
+            parqueadero.setFactorDemandaZonal(Float.parseFloat(seleccionComboBox.trim()));
         } else {
             registrarParqueaderoTemplate.getCbFactorDemandaZonal().setBorder(
                     BorderFactory.createLineBorder(

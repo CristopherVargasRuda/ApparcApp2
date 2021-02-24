@@ -430,7 +430,7 @@ public class RegistrarParqueaderoTemplate extends JPanel {
         
         // VEHÍCULOS PESADOS VALOR MÁXIMO POR MINUTO -------------------------
         lVMPMVehiculosPesados = sObjGraficos.construirJLabel(
-                "VMPM -> Vehículos Pesados:", 50, 1520, 260, 40, null, 
+                "VMPM -> V. Pesados:", 50, 1520, 260, 40, null, 
                 Color.WHITE, null, sRecursos.getFontComponente(), "l"
         );
         this.add(lVMPMVehiculosPesados);
