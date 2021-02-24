@@ -51,12 +51,7 @@ public class ControlLogin {
             tarifaDAO.buscarTarifas(parqueadero.getCodigo());
             tarifas = tarifaDAO.getTarifas();
             parqueadero.setTarifas(tarifas);
-            
-            for (Tarifa tarifa: tarifas){
-                System.out.println(tarifa.getTipoVehiculo() + "  -  " + 
-                        tarifa.getPrecioMaximoMinuto());
-            }
-            
+
             return true;
         }
         return false;
