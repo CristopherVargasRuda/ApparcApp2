@@ -65,6 +65,7 @@ public class ConsultaContratosComponent implements ActionListener, MouseListener
     }
 
     public void actualizarTabla() throws CaException, SQLException {
+        limpiarTabla();
         controlTablaContratos.cargarContrato();
         this.mostrarRegistrosTabla();
     }
@@ -93,5 +94,14 @@ public class ConsultaContratosComponent implements ActionListener, MouseListener
                     periodo, nombreCliente, identificacionCliente, placaVehiculo                    
                 }
         );
+    }
+    
+    public void limpiarTabla() {
+        int a = consultaContratosTemplate.getModelo().getRowCount() - 1;
+        for (int i = a; i >= 0; i--) {
+            consultaContratosTemplate.getModelo().removeRow(
+                    consultaContratosTemplate.getModelo().getRowCount() - 1
+            );
+        }
     }
 }

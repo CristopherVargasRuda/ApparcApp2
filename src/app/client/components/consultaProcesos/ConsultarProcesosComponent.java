@@ -77,9 +77,7 @@ public class ConsultarProcesosComponent implements ActionListener, MouseListener
                 }
                 try {
                     consultaContratosComponent.actualizarTabla();
-                } catch (CaException ex) {
-                    Logger.getLogger(ConsultarProcesosComponent.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
+                } catch (CaException | SQLException ex) {
                     Logger.getLogger(ConsultarProcesosComponent.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 consultarProcesosTemplate.crearScrollpane(

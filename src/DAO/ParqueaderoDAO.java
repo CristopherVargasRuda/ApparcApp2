@@ -72,6 +72,7 @@ public class ParqueaderoDAO {
             Connection conexion = ServiceLocator.getInstance().tomarConexion();
             PreparedStatement prepStmt = conexion.prepareStatement(sql);
             rs = prepStmt.executeQuery();
+            parqueaderos.clear();
             while (rs.next()) {
                 parqueadero = new Parqueadero();
                 parqueadero.setCodigo(rs.getInt("k_codigoparqueadero"));
@@ -88,7 +89,7 @@ public class ParqueaderoDAO {
             }
         } catch (SQLException e) {
             System.out.println("error: " + e);
-            throw new CaException("AreaDAO", "No se pudo cargar los datos del  Vehiculo" + e.getMessage());
+            throw new CaException("ParqueaderoDAO", "No se pudo cargar los datos del  Parqueadero" + e.getMessage());
         } finally {
             ServiceLocator.getInstance().liberarConexion();
         }

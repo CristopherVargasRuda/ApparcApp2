@@ -25,7 +25,7 @@ public class ControlTablaParqueaderos {
 
     public void cargarParqueadero() throws CaException {
         parqueaderos.clear();
-        parqueaderoDAO.setParqueaderos(parqueaderos);
+        parqueaderoDAO.setParqueaderos(parqueaderos); 
         parqueaderoDAO.cargarDatosTablaParqueaderos();
         parqueaderos = parqueaderoDAO.getParqueaderos();
     }

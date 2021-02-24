@@ -134,10 +134,10 @@ public class VistaPrincipalComponent {
                 break;
             case "Principal":
                 if (this.principalParqueaderoComponent == null) {
-                    this.registrarContratoComponent = new RegistrarContratoComponent(this);
+                    this.principalParqueaderoComponent = new PrincipalParqueaderoComponent(this);
                 }
                 vistaPrincipalTemplate.crearScrollpane(
-                        registrarContratoComponent.getVistaPrincipalComponent()
+                        principalParqueaderoComponent.getPrincipalParqueaderoTemplate()
                 );
                 break;
             case "Cerrar Sesión":

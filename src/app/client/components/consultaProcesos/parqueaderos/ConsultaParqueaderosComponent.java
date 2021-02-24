@@ -65,6 +65,7 @@ public class ConsultaParqueaderosComponent implements ActionListener, MouseListe
     }
 
     public void actualizarTabla() throws CaException, SQLException {
+        limpiarTabla();
         controlParqueaderos.cargarParqueadero();
         this.mostrarRegistrosTabla();
     }
@@ -102,6 +103,15 @@ public class ConsultaParqueaderosComponent implements ActionListener, MouseListe
                     cantidadNiveles
                 }
         );
+    }
+    
+    public void limpiarTabla() {
+        int a = consultaParqueaderosTemplate.getModelo().getRowCount() - 1;
+        for (int i = a; i >= 0; i--) {
+            consultaParqueaderosTemplate.getModelo().removeRow(
+                    consultaParqueaderosTemplate.getModelo().getRowCount() - 1
+            );
+        }
     }
 
 }

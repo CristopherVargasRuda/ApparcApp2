@@ -66,6 +66,7 @@ public class ConsultaVehiculosComponent implements ActionListener, MouseListener
     }
 
     public void actualizarTabla() throws CaException, SQLException {
+        limpiarTabla();
         controlTablaVehiculos.cargarVehiculo();
         this.mostrarRegistrosTabla();
     }
@@ -84,6 +85,15 @@ public class ConsultaVehiculosComponent implements ActionListener, MouseListener
         consultaVehiculosTemplate.getModelo().addRow(
                 new Object[]{placa, tipo}
         );
+    }
+    
+    public void limpiarTabla() {
+        int a = consultaVehiculosTemplate.getModelo().getRowCount() - 1;
+        for (int i = a; i >= 0; i--) {
+            consultaVehiculosTemplate.getModelo().removeRow(
+                    consultaVehiculosTemplate.getModelo().getRowCount() - 1
+            );
+        }
     }
 
 }

@@ -34,8 +34,8 @@ public class ControlTablaContratos {
     }
 
     public void cargarContrato() throws CaException {
-        contratos.clear();
-        contratoDAO.setContratos(contratos);
+        contratos.clear();        
+        contratoDAO.setContratos(contratos);        
         contratoDAO.cargarDatosTablaContratos();
         contratos = contratoDAO.getContratos();
         for (Contrato contrato: contratos){
