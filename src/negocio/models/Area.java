@@ -3,16 +3,15 @@ package negocio.models;
 import java.util.ArrayList;
 
 public class Area {
-    
+
     private ArrayList<Espacio> espacios = new ArrayList<Espacio>();
     int idArea, cantidadCupos, cantidadCuposDisponibles;
     String tipoVehiculo;
-    boolean vigilancia;
 
     public Area() {
     }
-    
-    public void agregarEspacio(Espacio espacio){
+
+    public void agregarEspacio(Espacio espacio) {
         this.espacios.add(espacio);
     }
 
@@ -48,18 +47,12 @@ public class Area {
         this.tipoVehiculo = tipoVehiculo;
     }
 
-    public boolean isVigilancia() {
-        return vigilancia;
-    }
-
-    public void setVigilancia(boolean vigilancia) {
-        this.vigilancia = vigilancia;
-    }    
-
     public ArrayList<Espacio> getEspacios() {
         return espacios;
-    }    
-    
-    
-    
+    }
+
+    public void setEspacios(ArrayList<Espacio> espacios) {
+        this.espacios = espacios;
+    }
+
 }
