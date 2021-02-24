@@ -1,5 +1,6 @@
 package app.client.components.principalParqueadero;
 
+import app.services.GraficosAvanzadosService;
 import app.services.ObjGraficosService;
 import app.services.RecursosService;
 import java.awt.Color;
@@ -17,6 +18,7 @@ public class PrincipalParqueaderoTemplate extends JPanel {
     private JLabel lTitulo, lBorde, lDireccion, lLocalidad, lTipoParqueadero, lNumeroNiveles, lTipoSuelo,
                    lFactorDemandaZonal, lEstado, lAereas;
     private JTextField tTipoParqueadero, tCantidadNiveles, tTipoSuelo, tFactorDemandaZonal, tEstado;
+    private GraficosAvanzadosService sGraficosAvanzados;
 
     // Declaración objetos para JTable -----------------------------------------------
     private JScrollPane pTabla;
@@ -24,13 +26,14 @@ public class PrincipalParqueaderoTemplate extends JPanel {
     private JTable tabla;
     private JTableHeader header;
     private DefaultTableModel modelo;
-    private String [] cabecera={"id", "Tipo Vehiculo", "Total Cupos", "Disponibles"};
+    private String [] cabecera={"id", "Tipo Vehiculo", "Total Cupos"};
 
 
     public PrincipalParqueaderoTemplate(PrincipalParqueaderoComponent principalParqueaderoComponent) {
         this.principalParqueaderoComponent = principalParqueaderoComponent;
         sObjGraficos = ObjGraficosService.getService();
-        sRecursos = RecursosService.getService();        
+        sRecursos = RecursosService.getService();       
+        sGraficosAvanzados = GraficosAvanzadosService.getService();
 
         this.crearObjetosDecoradores();
         this.crearJPanels();
@@ -59,14 +62,39 @@ public class PrincipalParqueaderoTemplate extends JPanel {
         this.tabla.setShowVerticalLines(false);
         this.header = this.tabla.getTableHeader();
         this.header.setPreferredSize(new Dimension(580, 30));
-        this.pTabla = this.sObjGraficos.construirPanelBarra(this.tabla, 160, 600, 580, 370, Color.WHITE, (Border)null);
-//        this.header.setDefaultRenderer(this.sGraficosAvanzados.devolverTablaPersonalizada(this.sRecursos.getColorAzulOscuro(), (Color)null, (Color)null, Color.WHITE, this.sRecursos.getFontComponente()));
-//        this.tabla.setDefaultRenderer(Object.class, this.sGraficosAvanzados.devolverTablaPersonalizada(Color.WHITE, this.sRecursos.getColorGris(), this.sRecursos.getColorAzulOscuro(), this.sRecursos.getColorNaranja(), this.sRecursos.getFontText()));
-//        this.pTabla.getVerticalScrollBar().setUI(this.sGraficosAvanzados.devolverScrollPersonalizado(7, 10, Color.WHITE, Color.GRAY, this.sRecursos.getColorRojo()));
-        this.pCorner = new JPanel();
-        this.pCorner.setBackground(this.sRecursos.getColorNaranja());
-        this.pTabla.setCorner("UPPER_RIGHT_CORNER", this.pCorner);
-        this.add(this.pTabla);
+        tabla.setEnabled(false);
+        pTabla = sObjGraficos.construirPanelBarra(
+                tabla, 50, 620, 780, 300, Color.WHITE, null
+        );
+
+        header.setDefaultRenderer(
+                sGraficosAvanzados.devolverTablaPersonalizada(
+                        sRecursos.getColorNaranja(), null, null, Color.WHITE,
+                        sRecursos.getFontLigera()
+                )
+        );
+
+        tabla.setDefaultRenderer(
+                Object.class,
+                sGraficosAvanzados.devolverTablaPersonalizada(
+                        Color.WHITE, sRecursos.getColorNavegacionFondo(),
+                        sRecursos.getColorNaranja(),
+                        Color.BLACK,
+                        sRecursos.getFontLigera()
+                )
+        );
+
+        pTabla.getVerticalScrollBar().setUI(
+                sGraficosAvanzados.devolverScrollPersonalizado(
+                        7, 10, Color.WHITE, sRecursos.getColorNaranja(),
+                        sRecursos.getColorSeleccion()
+                )
+        );
+        pCorner = new JPanel();
+        pCorner.setBackground(sRecursos.getColorNaranja());
+        pTabla.setCorner(JScrollPane.UPPER_RIGHT_CORNER, pCorner);
+
+        this.add(pTabla);
     }
 
     public void crearObjetosDecoradores() {
@@ -80,7 +108,7 @@ public class PrincipalParqueaderoTemplate extends JPanel {
     public void crearJTextFields() {
         // TIPO DE PARQUEADERO -------------------------------------------------
         tTipoParqueadero = sObjGraficos.construirJTextField(
-                "Tipo Parqueadero", 470, 170, 250, 40, null, Color.WHITE,
+                "Tipo Parqueadero", 470, 170, 290, 40, null, Color.WHITE,
                 sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c"
         );
         tTipoParqueadero.setBorder(sRecursos.getBordeNaranja());
@@ -90,7 +118,7 @@ public class PrincipalParqueaderoTemplate extends JPanel {
         
         // CANTIDAD NIVELES ----------------------------------------------------
         tCantidadNiveles = sObjGraficos.construirJTextField(
-                "Cantidad niveles", 470, 240, 250, 40, null, Color.WHITE,
+                "Cantidad niveles", 470, 240, 290, 40, null, Color.WHITE,
                 sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c"
         );
         tCantidadNiveles.setBorder(sRecursos.getBordeNaranja());
@@ -100,7 +128,7 @@ public class PrincipalParqueaderoTemplate extends JPanel {
         
         // TIPO DE SUELO -------------------------------------------------------
         tTipoSuelo = sObjGraficos.construirJTextField(
-                "Tipo De Suelo", 470, 310, 250, 40, null, Color.WHITE,
+                "Tipo De Suelo", 470, 310, 290, 40, null, Color.WHITE,
                 sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c"
         );
         tTipoSuelo.setBorder(sRecursos.getBordeNaranja());
@@ -110,7 +138,7 @@ public class PrincipalParqueaderoTemplate extends JPanel {
         
         // FACTOR ZONAL --------------------------------------------------------
         tFactorDemandaZonal = sObjGraficos.construirJTextField(
-                "Factor Zonal", 470, 380, 250, 40, null, Color.WHITE,
+                "Factor Zonal", 470, 380, 290, 40, null, Color.WHITE,
                 sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c"
         );
         tFactorDemandaZonal.setBorder(sRecursos.getBordeNaranja());
@@ -120,7 +148,7 @@ public class PrincipalParqueaderoTemplate extends JPanel {
         
         // ESTADO --------------------------------------------------------------
         tEstado = sObjGraficos.construirJTextField(
-                "Estado", 470, 450, 250, 40, null, Color.WHITE,
+                "Estado", 470, 450, 290, 40, null, Color.WHITE,
                 sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c"
         );
         tEstado.setBorder(sRecursos.getBordeNaranja());
@@ -173,35 +201,35 @@ public class PrincipalParqueaderoTemplate extends JPanel {
         
         // TIPO PARQUEADERO ----------------------------------------------------
         lTipoParqueadero = sObjGraficos.construirJLabel(
-                "Tipo de Parqueadero:", 170, 170, 260, 40, null, Color.WHITE,
+                "Tipo de Parqueadero:", 150, 170, 260, 40, null, Color.WHITE,
                 null, sRecursos.getFontComponente(), "l"
         );
         this.add(lTipoParqueadero);
         
         // CANTIDAD DE NIVELES -------------------------------------------------
         lNumeroNiveles = sObjGraficos.construirJLabel(
-                "Cantidad de Niveles:", 170, 240, 260, 40, null, Color.WHITE,
+                "Cantidad de Niveles:", 150, 240, 260, 40, null, Color.WHITE,
                 null, sRecursos.getFontComponente(), "l"
         );
         this.add(lNumeroNiveles);
         
         // TIPO DE SUELO -------------------------------------------------------
         lTipoSuelo = sObjGraficos.construirJLabel(
-                "Tipo de Suelo:", 170, 310, 260, 40, null, Color.WHITE, null,
+                "Tipo de Suelo:", 150, 310, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lTipoSuelo);
         
         // FACTOR DEMANDA ZONAL ----------------------------------------------
         lFactorDemandaZonal = sObjGraficos.construirJLabel(
-                "Factor de Demanda Zonal:", 170, 380, 260, 40, null, Color.WHITE,
+                "Factor de Demanda Zonal:", 150, 380, 260, 40, null, Color.WHITE,
                 null, sRecursos.getFontComponente(), "l"
         );
         this.add(lFactorDemandaZonal);
 
         // ESTADO ------------------------------------------------------------
         lEstado = sObjGraficos.construirJLabel(
-                "Estado:", 170, 450, 260, 40, null, Color.WHITE, null,
+                "Estado:", 150, 450, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lEstado);
@@ -240,8 +268,8 @@ public class PrincipalParqueaderoTemplate extends JPanel {
     public void setTipoSuelo(String tipoSuelo) {
         tTipoSuelo.setText(tipoSuelo);
     }
-    public void setFactorDemandaZonal(String factorDemandaZonal) {
-        tFactorDemandaZonal.setText(factorDemandaZonal);
+    public void setFactorDemandaZonal(float factorDemandaZonal) {
+        tFactorDemandaZonal.setText(String.valueOf(factorDemandaZonal));
     }
     public void setEstado(boolean estado) {
         String sEstado = "Cerrado";
@@ -249,5 +277,9 @@ public class PrincipalParqueaderoTemplate extends JPanel {
             sEstado = "Abierto";
         }
         tEstado.setText(sEstado);
+    }
+    
+    public DefaultTableModel getModelo() {
+        return modelo;
     }
 }

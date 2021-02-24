@@ -122,7 +122,36 @@ public class ParqueaderoDAO {
             ServiceLocator.getInstance().liberarConexion();
         }
     }
-
+    
+    public void traerParqueadero(String nombreParqueadero)throws CaException {
+        System.out.println(nombreParqueadero+" DAO");
+        parqueadero.setNombre(nombreParqueadero);
+        
+        String sql = "SELECT k_codigoparqueadero, n_nombreparqueadero, n_direccion, n_localidad, i_estadoparqueadero "
+                    + "FROM parqueadero "
+                    + "where n_nombreparqueadero = ?;";
+        
+        ResultSet rs;
+        try {
+            Connection conexion = ServiceLocator.getInstance().tomarConexion();
+            PreparedStatement prepStmt = conexion.prepareStatement(sql);
+            prepStmt.setString(1, nombreParqueadero);
+            rs = prepStmt.executeQuery();
+            System.out.println(rs);
+            while (rs.next()) {
+                parqueadero.setCodigo(rs.getInt("k_codigoparqueadero"));
+                parqueadero.setNombre(rs.getString("n_nombreparqueadero"));
+                parqueadero.setDireccion(rs.getString("n_direccion"));
+                parqueadero.setLocalidad(rs.getString("n_localidad"));
+                parqueadero.setEstado(rs.getBoolean("i_estadoparqueadero"));
+            }
+        } catch (SQLException e) {
+            throw new CaException("ParqueaderoDAO", "No se pudo cargar los datos del espacio" + e.getMessage());
+        } finally {
+            ServiceLocator.getInstance().liberarConexion();
+        }
+    }
+    
     public Parqueadero getParqueadero() {
         return parqueadero;
     }
