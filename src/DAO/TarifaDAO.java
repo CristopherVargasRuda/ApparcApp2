@@ -34,6 +34,33 @@ public class TarifaDAO {
 
     }
 
+    public void buscarTarifas(int codigoParqueadero) throws CaException {
+        String sql = "SELECT t.k_idtarifa, t.n_tipovehiculo, "
+                + "t.v_valormaxminuto, t.k_codigoparqueadero "
+                + "FROM tarifa t, parqueadero p "
+                + "WHERE t.k_codigoparqueadero = p.k_codigoparqueadero "
+                + "AND t.k_codigoparqueadero = ?;";
+
+        ResultSet rs;
+        try {
+            Connection conexion = ServiceLocator.getInstance().tomarConexion();
+            PreparedStatement prepStmt = conexion.prepareStatement(sql);
+            prepStmt.setInt(1, codigoParqueadero);
+            rs = prepStmt.executeQuery();
+            while (rs.next()) {
+                tarifa = new Tarifa();
+                tarifa.setIdTarifa(rs.getInt("k_idtarifa"));
+                tarifa.setTipoVehiculo(rs.getString("n_tipovehiculo"));
+                tarifa.setPrecioMaximoMinuto(rs.getInt("v_valormaxminuto"));
+                tarifas.add(tarifa);
+            }
+        } catch (SQLException e) {
+            throw new CaException("AreaDAO", "No se pudo cargar los datos del  Area" + e.getMessage());
+        } finally {
+            ServiceLocator.getInstance().liberarConexion();
+        }
+    }
+
     public void actualizar() throws CaException {
 
     }
@@ -49,5 +76,11 @@ public class TarifaDAO {
     public ArrayList<Tarifa> getTarifas() {
         return tarifas;
     }
+
+    public void setTarifas(ArrayList<Tarifa> tarifas) {
+        this.tarifas = tarifas;
+    }
+    
+    
 
 }

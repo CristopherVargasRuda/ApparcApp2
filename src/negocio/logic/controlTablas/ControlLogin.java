@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import negocio.models.Area;
 import negocio.models.Espacio;
 import negocio.models.Parqueadero;
+import negocio.models.Tarifa;
 import util.CaException;
 
 public class ControlLogin {
@@ -12,16 +13,18 @@ public class ControlLogin {
     private Parqueadero parqueadero;
     private ArrayList<Area> areas;
     private ArrayList<Espacio> espacios;
+    private ArrayList<Tarifa> tarifas;
     private ParqueaderoDAO parqueaderoDAO;
     private AreaDAO areaDAO;
     private EspacioDAO espacioDAO;
+    private TarifaDAO tarifaDAO;
 
     public ControlLogin() {
         parqueadero = new Parqueadero();
         parqueaderoDAO = new ParqueaderoDAO();
         areaDAO = new AreaDAO();
         espacioDAO = new EspacioDAO();
-                
+        tarifaDAO = new TarifaDAO();
     }
 
     public boolean verificarParqueadero(String nombre, String clave) throws CaException {
@@ -42,6 +45,18 @@ public class ControlLogin {
                 espacios = espacioDAO.getEspacios();
                 area.setEspacios(espacios);
             }
+            
+            tarifas = new ArrayList<Tarifa>();
+            tarifaDAO.setTarifas(tarifas);
+            tarifaDAO.buscarTarifas(parqueadero.getCodigo());
+            tarifas = tarifaDAO.getTarifas();
+            parqueadero.setTarifas(tarifas);
+            
+            for (Tarifa tarifa: tarifas){
+                System.out.println(tarifa.getTipoVehiculo() + "  -  " + 
+                        tarifa.getPrecioMaximoMinuto());
+            }
+            
             return true;
         }
         return false;
@@ -54,5 +69,7 @@ public class ControlLogin {
     public void setParqueadero(Parqueadero parqueadero) {
         this.parqueadero = parqueadero;
     }
+    
+    
 
 }

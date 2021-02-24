@@ -18,7 +18,29 @@ public class AreaDAO {
         area = new Area();
     }
 
-   
+    public void registrarArea(int codigoParqueadero) throws CaException {
+        String sql = "INSERT INTO area(k_idArea, n_tipoVehiculoArea, q_cupos, "
+                + "q_cuposDisponibles, k_codigoParqueadero) VALUES "
+                + "(?, ?, ?, ?, ?);";
+        ResultSet rs;
+        try {
+            Connection conexion = ServiceLocator.getInstance().tomarConexion();
+            PreparedStatement prepStmt = conexion.prepareStatement(sql);
+            prepStmt.setInt(1, area.getIdArea());
+            prepStmt.setString(2, area.getTipoVehiculo());
+            prepStmt.setInt(3, area.getCantidadCupos());
+            prepStmt.setInt(4, area.getCantidadCuposDisponibles());
+            prepStmt.setInt(5, codigoParqueadero);
+            prepStmt.executeUpdate();
+            prepStmt.close();
+            ServiceLocator.getInstance().commit();
+
+        } catch (SQLException e) {
+            throw new CaException("ParqueaderoDAO", "No se puede insertar los datos del  parqueadero" + e.getMessage());
+        } finally {
+            ServiceLocator.getInstance().liberarConexion();
+        }
+    }
 
     public void buscarAreas(int codigoParqueadero) throws CaException {
         String sql = "SELECT k_idarea, n_tipovehiculoarea, q_cupos, "
@@ -46,7 +68,6 @@ public class AreaDAO {
             ServiceLocator.getInstance().liberarConexion();
         }
     }
-
 
     public Area getArea() {
         return area;

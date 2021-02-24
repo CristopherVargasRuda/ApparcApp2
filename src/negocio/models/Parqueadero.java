@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Parqueadero {
 
     private ArrayList<Area> areas = new ArrayList<Area>();
+    private ArrayList<Tarifa> tarifas = new ArrayList<Tarifa>();
     private String nombre, clave, direccion, localidad, tipoSuelo;
     private int cantidadNiveles, codigo;
     private boolean estado, subterraneo;
@@ -105,4 +106,12 @@ public class Parqueadero {
         this.areas = areas;
     }
 
+    public ArrayList<Tarifa> getTarifas() {
+        return tarifas;
+    }
+
+    public void setTarifas(ArrayList<Tarifa> tarifas) {
+        this.tarifas = tarifas;
+    }
+    
 }

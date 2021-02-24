@@ -19,7 +19,35 @@ public class ParqueaderoDAO {
     }
 
     public void insertar() throws CaException {
+        String sql = "INSERT INTO parqueadero(k_codigoParqueadero, "
+                + "n_nombreParqueadero, n_direccion, n_localidad, "
+                + "i_subterraneo, q_cantidadNiveles, i_tipoSuelo, "
+                + "i_factorDemandaZonal, o_contrasenaParqueadero, "
+                + "i_estadoParqueadero);"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        ResultSet rs;
+        try {
+            Connection conexion = ServiceLocator.getInstance().tomarConexion();
+            PreparedStatement prepStmt = conexion.prepareStatement(sql);
+            prepStmt.setInt(1, parqueadero.getCodigo());
+            prepStmt.setString(2, parqueadero.getNombre());
+            prepStmt.setString(3, parqueadero.getDireccion());
+            prepStmt.setString(4, parqueadero.getLocalidad());
+            prepStmt.setBoolean(5, parqueadero.isSubterraneo());
+            prepStmt.setInt(6, parqueadero.getCantidadNiveles());
+            prepStmt.setString(7, parqueadero.getTipoSuelo());
+            prepStmt.setFloat(8, parqueadero.getFactorDemandaZonal());
+            prepStmt.setString(9, parqueadero.getClave());
+            prepStmt.setBoolean(10, parqueadero.isEstado());
+            prepStmt.executeUpdate();
+            prepStmt.close();
+            ServiceLocator.getInstance().commit();
 
+        } catch (SQLException e) {
+            throw new CaException("ParqueaderoDAO", "No se puede insertar los datos del  parqueadero" + e.getMessage());
+        } finally {
+            ServiceLocator.getInstance().liberarConexion();
+        }
     }
 
     public void modificar() {
@@ -34,7 +62,7 @@ public class ParqueaderoDAO {
             Connection conexion = ServiceLocator.getInstance().tomarConexion();
             PreparedStatement prepStmt = conexion.prepareStatement(sql);
             rs = prepStmt.executeQuery();
-            
+
             while (rs.next()) {
                 parqueadero.setCodigo(rs.getInt("k_codigoparqueadero"));
                 parqueadero.setNombre(rs.getString("n_nombreparqueadero"));
