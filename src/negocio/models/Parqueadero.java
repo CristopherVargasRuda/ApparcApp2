@@ -5,11 +5,19 @@ import java.util.ArrayList;
 public class Parqueadero {
 
     private ArrayList<Area> areas = new ArrayList<Area>();
-    private String nombre, clave, direccion, localidad, factorDemandaZonal,
-            tipoSuelo;
-    private int cantidadNiveles, cantidadAutomoviles;
+    private String nombre, clave, direccion, localidad, tipoSuelo;
+    private int cantidadNiveles, codigo;
     private boolean estado, subterraneo;
+    private float factorDemandaZonal;
 
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+    
     public Parqueadero() {
     }
 
@@ -57,28 +65,20 @@ public class Parqueadero {
         this.tipoSuelo = tipoSuelo;
     }
 
-    public String getFactorDemandaZonal() {
+    public float getFactorDemandaZonal() {
         return factorDemandaZonal;
     }
 
-    public void setFactorDemandaZonal(String factorDemandaZonal) {
+    public void setFactorDemandaZonal(float factorDemandaZonal) {
         this.factorDemandaZonal = factorDemandaZonal;
     }
-
+    
     public int getCantidadNiveles() {
         return cantidadNiveles;
     }
 
     public void setCantidadNiveles(int cantidadNiveles) {
         this.cantidadNiveles = cantidadNiveles;
-    }
-
-    public int getCantidadAutomoviles() {
-        return cantidadAutomoviles;
-    }
-
-    public void setCantidadAutomoviles(int cantidadAutomoviles) {
-        this.cantidadAutomoviles = cantidadAutomoviles;
     }
 
     public boolean isEstado() {
@@ -99,6 +99,10 @@ public class Parqueadero {
 
     public ArrayList<Area> getAreas() {
         return areas;
+    }
+
+    public void setAreas(ArrayList<Area> areas) {
+        this.areas = areas;
     }
 
 }
