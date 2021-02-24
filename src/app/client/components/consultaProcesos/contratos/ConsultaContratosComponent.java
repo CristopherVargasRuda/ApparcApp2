@@ -69,7 +69,7 @@ public class ConsultaContratosComponent implements ActionListener, MouseListener
     }
 
     public void agregarRegistro(Contrato contrato) {
-        String idContrato, valorPago, fechaInicio, fechaFinal, periodo, cedula,
+        String idContrato, valorPago, fechaInicio, fechaFinal, periodo, identificacionCliente,
         nombreCliente, placaVehiculo;
         idContrato = contrato.getIdContrato()+"";
         valorPago = contrato.getValorPago()+"";
@@ -80,12 +80,12 @@ public class ConsultaContratosComponent implements ActionListener, MouseListener
                 + contrato.getCliente().getSegundoNombre()
                 + contrato.getCliente().getPrimerApellido()
                 + contrato.getCliente().getSegundoApellido();
-        cedula = contrato.getCliente().getCedulaCliente()+"";
+        identificacionCliente = contrato.getCliente().getIdentificacionCliente()+"";
         placaVehiculo = contrato.getVehiculo().getPlaca();
         
         consultaContratosTemplate.getModelo().addRow(
                 new Object[]{idContrato, valorPago, fechaInicio, fechaFinal, 
-                    periodo, nombreCliente, cedula, placaVehiculo                    
+                    periodo, nombreCliente, identificacionCliente, placaVehiculo                    
                 }
         );
     }

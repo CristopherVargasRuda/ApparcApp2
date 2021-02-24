@@ -126,10 +126,6 @@ public class RegistrarContratoComponent implements ActionListener,
                     && textField.getText().equals("Telefono")) {
                 registrarContratoTemplate.gettTelefono().setText("");
             }
-            if (e.getSource() == registrarContratoTemplate.gettTelefonoOpcional()
-                    && textField.getText().equals("Telefono (Opcional)")) {
-                registrarContratoTemplate.gettTelefonoOpcional().setText("");
-            }
             if (e.getSource() == registrarContratoTemplate.getTPlaca()
                     && textField.getText().equals("Placa/Número de serie")) {
                 registrarContratoTemplate.getTPlaca().setText("");
@@ -201,10 +197,6 @@ public class RegistrarContratoComponent implements ActionListener,
             if (e.getSource() == registrarContratoTemplate.gettTelefono()
                     && textField.getText().equals("")) {
                 registrarContratoTemplate.gettTelefono().setText("Telefono");
-            }
-            if (e.getSource() == registrarContratoTemplate.gettTelefonoOpcional()
-                    && textField.getText().equals("")) {
-                registrarContratoTemplate.gettTelefonoOpcional().setText("Telefono (Opcional)");
             }
             if (e.getSource() == registrarContratoTemplate.getTPlaca()
                     && textField.getText().equals("")) {
@@ -308,12 +300,12 @@ public class RegistrarContratoComponent implements ActionListener,
         }
 
         // TIPO DE DOCUMENTO --------------------------------------------   
-        seleccionComboBox = (String) registrarContratoTemplate.getCbTipoDocumento().getSelectedItem();
+        seleccionComboBox = (String) registrarContratoTemplate.getCbTipoIdentificacion().getSelectedItem();
         if (!seleccionComboBox.equals("Seleccione una opción")
                 && !seleccionComboBox.equals("")) {
             cliente.setSexo(seleccionComboBox.trim());
         } else {
-            registrarContratoTemplate.getCbTipoDocumento().setBorder(
+            registrarContratoTemplate.getCbTipoIdentificacion().setBorder(
                     BorderFactory.createLineBorder(
                             registrarContratoTemplate.getsRecursos().getColorRojo(), 2
                     )
@@ -327,7 +319,7 @@ public class RegistrarContratoComponent implements ActionListener,
                 && !registrarContratoTemplate.gettNumeroDocumento().getText().equals("")
                 && vistaPrincipalComponent.validarNumeros(
                         registrarContratoTemplate.gettNumeroDocumento().getText().trim(), 2)) {
-            cliente.setCedulaCliente(Integer.parseInt(
+            cliente.setIdentificacionCliente(Integer.parseInt(
                     registrarContratoTemplate.gettNumeroDocumento().getText().trim()
             )
             );
@@ -356,7 +348,7 @@ public class RegistrarContratoComponent implements ActionListener,
                 && !registrarContratoTemplate.gettTelefono().getText().equals("")
                 && vistaPrincipalComponent.validarNumeros(
                         registrarContratoTemplate.gettTelefono().getText().trim(), 2)) {
-            cliente.setTelefono(Integer.parseInt(
+            cliente.setTelefono(Float.parseFloat(
                     registrarContratoTemplate.gettTelefono().getText().trim()
             )
             );
@@ -365,23 +357,6 @@ public class RegistrarContratoComponent implements ActionListener,
                     registrarContratoTemplate.getsRecursos().getBordeRojo()
             );
             JOptionPane.showMessageDialog(null, "Ingrese telefono", "Advertencia", 1);
-            return false;
-        }
-        
-        // TELEFONO OPCIONAL CLIENTE --------------------------------------------   
-        if (!registrarContratoTemplate.gettTelefonoOpcional().getText().equals("Telefono (Opcional)")
-                && !registrarContratoTemplate.gettTelefonoOpcional().getText().equals("")
-                && vistaPrincipalComponent.validarNumeros(
-                        registrarContratoTemplate.gettTelefonoOpcional().getText().trim(), 2)) {
-            cliente.setTelefonoOpcional(Integer.parseInt(
-                    registrarContratoTemplate.gettTelefonoOpcional().getText().trim()
-            )
-            );
-        } else {
-            registrarContratoTemplate.gettTelefonoOpcional().setBorder(
-                    registrarContratoTemplate.getsRecursos().getBordeRojo()
-            );
-            JOptionPane.showMessageDialog(null, "Ingrese telefono (opcional)", "Advertencia", 1);
             return false;
         }
 
@@ -547,9 +522,6 @@ public class RegistrarContratoComponent implements ActionListener,
         registrarContratoTemplate.gettTelefono().setText(
                 "Telefono"
         );
-        registrarContratoTemplate.gettTelefonoOpcional().setText(
-                "Telefono (Opcional)"
-        );
         registrarContratoTemplate.getTPlaca().setText(
                 "Placa/Numero de serie"
         );
@@ -573,7 +545,7 @@ public class RegistrarContratoComponent implements ActionListener,
         );
         
         registrarContratoTemplate.getCbSexo().setSelectedIndex(0);
-        registrarContratoTemplate.getCbTipoDocumento().setSelectedIndex(0);
+        registrarContratoTemplate.getCbTipoIdentificacion().setSelectedIndex(0);
         registrarContratoTemplate.getCbTipoVehiculo().setSelectedIndex(0);
         registrarContratoTemplate.getCbPeriodo().setSelectedIndex(0);
         registrarContratoTemplate.getCbEstadoContrato().setSelectedIndex(0);

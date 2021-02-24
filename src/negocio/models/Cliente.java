@@ -3,8 +3,9 @@ package negocio.models;
 public class Cliente {
     
     private String primerNombre, segundoNombre, primerApellido, segundoApellido, 
-            sexo, tipoDocumento, direccion;
-    private int cedulaCliente, telefono, telefonoOpcional;
+            sexo, tipoIdentificacion, direccion;
+    private int identificacionCliente;
+    private float telefono;
 
     public String getPrimerNombre() {
         return primerNombre;
@@ -46,12 +47,12 @@ public class Cliente {
         this.sexo = sexo;
     }
 
-    public String getTipoDocumento() {
-        return tipoDocumento;
+    public String getTipoIdentificacion() {
+        return tipoIdentificacion;
     }
 
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
+    public void setTipoIdentificacion(String tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
     }
 
     public String getDireccion() {
@@ -62,32 +63,20 @@ public class Cliente {
         this.direccion = direccion;
     }
 
-    public int getCedulaCliente() {
-        return cedulaCliente;
+    public int getIdentificacionCliente() {
+        return identificacionCliente;
     }
 
-    public void setCedulaCliente(int cedulaCliente) {
-        this.cedulaCliente = cedulaCliente;
+    public void setIdentificacionCliente(int identificacionCliente) {
+        this.identificacionCliente = identificacionCliente;
     }
 
-    public int getTelefono() {
+    public float getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(float telefono) {
         this.telefono = telefono;
     }
-
-    public int getTelefonoOpcional() {
-        return telefonoOpcional;
-    }
-
-    public void setTelefonoOpcional(int telefonoOpcional) {
-        this.telefonoOpcional = telefonoOpcional;
-    }
-
-    
-
-    
     
 }

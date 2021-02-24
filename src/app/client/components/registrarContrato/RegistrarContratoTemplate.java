@@ -18,14 +18,14 @@ public class RegistrarContratoTemplate extends JPanel {
     private RecursosService sRecursos;
     private JLabel lTitulo, lDatosCliente, lBorde, lColor, lFechaInicio, lValor, 
             lNumeroDocumento, lPrimerNombre, lSegundoNombre, lPrimerApellido, 
-            lSegundoApellido,lSexo, lTipoDocumento,lTelefono, lDireccionCliente, 
-            lTelefonoOpcional, lDatosVehiculo, lTipoVehiculo, lPlaca, 
+            lSegundoApellido,lSexo, lTipoIdentificacion,lTelefono, lDireccionCliente, 
+            lDatosVehiculo, lTipoVehiculo, lPlaca, 
             lMarca,lModelo, lDatosContrato, lPeriodo, lFechaFin,lEstadoContrato;          
     private JTextField tPrimerNombre, tSegundoNombre, tPrimerApellido, 
             tSegundoApellido, tNumeroDocumento, tDireccionCliente,tnNiveles, 
-            tnAutomoviles, tTelefono, tTelefonoOpcional, TPlaca, TMarca, TColor, 
+            tnAutomoviles, tTelefono, TPlaca, TMarca, TColor, 
             TModelo, tnFechaInicio, tnFechaFin, tnValor;
-    private JComboBox cbSexo, cbTipoDocumento, cbTipoVehiculo,
+    private JComboBox cbSexo, cbTipoIdentificacion, cbTipoVehiculo,
             cbPeriodo, cbEstadoContrato;
     private JButton bRegistrarContrato, bLimpiar;
     
@@ -113,20 +113,10 @@ public class RegistrarContratoTemplate extends JPanel {
         tTelefono.setBorder(sRecursos.getBordeNaranja());
         tTelefono.addFocusListener(registrarContratoComponent);
         this.add(tTelefono);
-        
-        // TELEFONO OPCIONAL CLIENTE --------------------------------
-        tTelefonoOpcional = sObjGraficos.construirJTextField(
-                "Telefono (Opcional)", 350, 860, 470, 40, null,
-                Color.WHITE, sRecursos.getColorNaranja(),
-                sRecursos.getFontText(), null, "c"
-        );
-        tTelefonoOpcional.setBorder(sRecursos.getBordeNaranja());
-        tTelefonoOpcional.addFocusListener(registrarContratoComponent);
-        this.add(tTelefonoOpcional);
 
         // PLACA/NUMERO DE SERIE -------------------------------------------------
         TPlaca = sObjGraficos.construirJTextField(
-                "Placa/Numero de serie", 350, 1170, 470, 40, null,
+                "Placa/Numero de serie", 350, 1100, 470, 40, null,
                 Color.WHITE, sRecursos.getColorNaranja(),
                 sRecursos.getFontText(), null, "c"
         );
@@ -136,7 +126,7 @@ public class RegistrarContratoTemplate extends JPanel {
         
         // MARCA VEHICULO -------------------------------
         TMarca = sObjGraficos.construirJTextField(
-                "Marca", 350, 1240, 470, 40, null,
+                "Marca", 350, 1170, 470, 40, null,
                 Color.WHITE, sRecursos.getColorNaranja(),
                 sRecursos.getFontText(), null, "c"
         );
@@ -146,7 +136,7 @@ public class RegistrarContratoTemplate extends JPanel {
 
         // COLOR VEHICULO ----------------------------------------
         TColor = sObjGraficos.construirJTextField(
-                "Color", 350, 1310, 470, 40,
+                "Color", 350, 1240, 470, 40,
                 null, Color.WHITE, sRecursos.getColorNaranja(),
                 sRecursos.getFontText(), null, "c"
         );
@@ -156,7 +146,7 @@ public class RegistrarContratoTemplate extends JPanel {
         
         // MODELO VEHICULO -----------------------------------------
         TModelo = sObjGraficos.construirJTextField(
-                "Modelo", 350, 1380, 470, 40,
+                "Modelo", 350, 1310, 470, 40,
                 null, Color.WHITE, sRecursos.getColorNaranja(),
                 sRecursos.getFontText(), null, "c"
         );
@@ -166,7 +156,7 @@ public class RegistrarContratoTemplate extends JPanel {
 
         // FECHA DE INICIO CONTRATO ------------------------------------------------
         tnFechaInicio = sObjGraficos.construirJTextField(
-                "Fecha de inicio", 350, 1660, 470, 40, null,
+                "Fecha de inicio", 350, 1590, 470, 40, null,
                 Color.WHITE, sRecursos.getColorNaranja(),
                 sRecursos.getFontText(), null, "c"
         );
@@ -176,7 +166,7 @@ public class RegistrarContratoTemplate extends JPanel {
         
         // FECHA DE CADUCIDAD CONTRATO -----------------------------
         tnFechaFin = sObjGraficos.construirJTextField(
-                "Fecha de caducidad", 350, 1730, 470, 40, null,
+                "Fecha de caducidad", 350, 1660, 470, 40, null,
                 Color.WHITE, sRecursos.getColorNaranja(),
                 sRecursos.getFontText(), null, "c"
         );
@@ -186,7 +176,7 @@ public class RegistrarContratoTemplate extends JPanel {
 
         // VALOR CONTRATO -------------------------------------------------
         tnValor = sObjGraficos.construirJTextField(
-                "Valor", 350, 1800, 470, 40, null,
+                "Valor", 350, 1730, 470, 40, null,
                 Color.WHITE, sRecursos.getColorNaranja(),
                 sRecursos.getFontText(), null, "c"
         );
@@ -199,7 +189,7 @@ public class RegistrarContratoTemplate extends JPanel {
     public void crearJButtons() {
         // BOTÓN REGISTRAR CONTRATO ---------------------------------------
         bRegistrarContrato = sObjGraficos.construirJButton(
-                "Registrar Contrato", (880 - 300) / 2, 1960, 300, 60,
+                "Registrar Contrato", (880 - 300) / 2, 1905, 300, 60,
                 sRecursos.getcMano(), null, sRecursos.getFontBoton(),
                 sRecursos.getColorNaranja(), Color.white, null,
                 "C", true
@@ -210,7 +200,7 @@ public class RegistrarContratoTemplate extends JPanel {
 
         // BOTÓN LIMPIAR -----------------------------------------------------
         bLimpiar = sObjGraficos.construirJButton(
-                "Limpiar", (880 - 100) / 2, 2040, 100, 30,
+                "Limpiar", (880 - 100) / 2, 1985, 100, 30,
                 sRecursos.getcMano(), null, sRecursos.getFontText(),
                 sRecursos.getColorGris(), Color.WHITE, null,
                 "C", true
@@ -233,21 +223,21 @@ public class RegistrarContratoTemplate extends JPanel {
         this.add(cbSexo);
 
         // TIPO DE DOCUMENTO ------------------------------------------------
-        cbTipoDocumento = sObjGraficos.construirJComboBox(
+        cbTipoIdentificacion = sObjGraficos.construirJComboBox(
                 "Seleccione una opción_Cedula de Ciudadania_Tarjeta de "
                         + "Identidad_Cedula de Extranjeria_NUIP_"
                         + "Pasaporte", 350, 580, 470,
                 40, Color.WHITE, Color.BLACK, "c"
         );
-        cbTipoDocumento.setFont(sRecursos.getFontText());
-        cbTipoDocumento.setBorder(BorderFactory.createLineBorder(sRecursos.getColorNaranja(), 1));
-        cbTipoDocumento.addFocusListener(registrarContratoComponent);
-        this.add(cbTipoDocumento);
+        cbTipoIdentificacion.setFont(sRecursos.getFontText());
+        cbTipoIdentificacion.setBorder(BorderFactory.createLineBorder(sRecursos.getColorNaranja(), 1));
+        cbTipoIdentificacion.addFocusListener(registrarContratoComponent);
+        this.add(cbTipoIdentificacion);
 
         // TIPO DE VEHICULO ----------------------------------------------------
         cbTipoVehiculo = sObjGraficos.construirJComboBox(
                 "Seleccione una opción_Automovil_Campero_Camioneta_"
-                + "Pesado_Motocicleta_Bicicleta", 350, 1100, 470,
+                + "Pesado_Motocicleta_Bicicleta", 350, 1030, 470,
                 40, Color.WHITE, Color.BLACK, "c"
         );
         cbTipoVehiculo.setFont(sRecursos.getFontText());
@@ -257,7 +247,7 @@ public class RegistrarContratoTemplate extends JPanel {
 
         // PERIODO ----------------------------------------------
         cbPeriodo = sObjGraficos.construirJComboBox(
-                "Seleccione una opción_Dia_Semana_Mes_Año", 350, 1590, 470, 40, Color.WHITE,
+                "Seleccione una opción_Dia_Semana_Mes_Año", 350, 1520, 470, 40, Color.WHITE,
                 Color.BLACK, "c"
         );
         cbPeriodo.setFont(sRecursos.getFontText());
@@ -267,7 +257,7 @@ public class RegistrarContratoTemplate extends JPanel {
 
         // ESTADO CONTRATO------------------------------------------------------------
         cbEstadoContrato = sObjGraficos.construirJComboBox(
-                "Seleccione una opción_Vigente_Caducado", 350, 1870, 470, 40,
+                "Seleccione una opción_Vigente_Caducado", 350, 1800, 470, 40,
                 Color.WHITE, Color.BLACK, "c"
         );
         cbEstadoContrato.setFont(sRecursos.getFontText());
@@ -328,11 +318,11 @@ public class RegistrarContratoTemplate extends JPanel {
         this.add(lSexo);
         
         // TIPO DE DOCUMENTO DEL CLIENTE-------------------------------------------
-        lTipoDocumento = sObjGraficos.construirJLabel(
+        lTipoIdentificacion = sObjGraficos.construirJLabel(
                 "Tipo de documento:", 50, 580, 260, 40, null, Color.WHITE,
                 null, sRecursos.getFontComponente(), "l"
         );
-        this.add(lTipoDocumento);
+        this.add(lTipoIdentificacion);
 
         // NUMERO DE DOCUMENTO CLIENTE -----------------------------------------
         lNumeroDocumento = sObjGraficos.construirJLabel(
@@ -354,115 +344,117 @@ public class RegistrarContratoTemplate extends JPanel {
                 null, sRecursos.getFontComponente(), "l"
         );
         this.add(lTelefono);
-
+        
+        /*
         // TELEFONO OPCIONAL CLIENTE-------------------------------------------
         lTelefonoOpcional = sObjGraficos.construirJLabel(
                 "Telefono (Opcional):", 50, 860, 260, 40, null, Color.WHITE,
                 null, sRecursos.getFontComponente(), "l"
         );
         this.add(lTelefonoOpcional);
-
+        */
+        
         // BORDE ----------------------------------------------------
         lBorde = sObjGraficos.construirJLabel(
-                null, 40, 950, 800, 5, null, null, null, null, "l"
+                null, 40, 880, 800, 5, null, null, null, null, "l"
         );
         lBorde.setBorder(sRecursos.getBordeSeccion());
         this.add(lBorde);
 
         // DATOS VEHICULO ----------------------------------------------
         lDatosVehiculo = sObjGraficos.construirJLabel(
-                "Datos Vehiculo", 0, 1000, 880, 40, null, Color.WHITE,
+                "Datos Vehiculo", 0, 930, 880, 40, null, Color.WHITE,
                 null, sRecursos.getFontSeccion(), "c"
         );
         this.add(lDatosVehiculo);
         
         // TIPO DE VEHICULO ------------------------------------------------------------
         lTipoVehiculo = sObjGraficos.construirJLabel(
-                "Tipo de Vehiculo:", 50, 1100, 880, 40, null, Color.WHITE, null,
+                "Tipo de Vehiculo:", 50, 1030, 880, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lTipoVehiculo);
         
         // PLACA/NUMERO DE SERIE VEHICULO ------------------------------------------------------------
         lPlaca = sObjGraficos.construirJLabel(
-                "Placa/Numero de serie:", 50, 1170, 260, 40, null, Color.WHITE, null,
+                "Placa/Numero de serie:", 50, 1100, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lPlaca);
 
         // MARCA DEL VEHICULO ------------------------------------------------------------
         lMarca = sObjGraficos.construirJLabel(
-                "Marca:", 50, 1240, 260, 40, null, Color.WHITE, null,
+                "Marca:", 50, 1170, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lMarca);
         
         // COLOR DEL VEHICULO ------------------------------------------------
         lColor = sObjGraficos.construirJLabel(
-                "Color:", 50, 1310, 260, 40, null, Color.WHITE, null,
+                "Color:", 50, 1240, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lColor);
         
         // MODELO DEL VEHICULO ------------------------------
         lModelo = sObjGraficos.construirJLabel(
-                "Modelo:", 50, 1380, 260, 40, null, Color.WHITE, 
+                "Modelo:", 50, 1310, 260, 40, null, Color.WHITE, 
                 null, sRecursos.getFontComponente(), "l"
         );
         this.add(lModelo);
 
         // BORDE -------------------------------------------------------------
         lBorde = sObjGraficos.construirJLabel(
-                null, 40, 1470, 800, 5, null, null, null, null, "l"
+                null, 40, 1400, 800, 5, null, null, null, null, "l"
         );
         lBorde.setBorder(sRecursos.getBordeSeccion());
         this.add(lBorde);
         
         // DATOS CONTRATO  -------------------------------
         lDatosContrato = sObjGraficos.construirJLabel(
-                "Datos Contrato", 0, 1520, 880, 40, null, Color.WHITE, 
+                "Datos Contrato", 0, 1450, 880, 40, null, Color.WHITE, 
                 null, sRecursos.getFontSeccion(), "c"
         );
         this.add(lDatosContrato);
         
         // PERIODO DEL CONTRATO -------------------------------------------------
         lPeriodo = sObjGraficos.construirJLabel(
-                "Periodo:", 50, 1590, 260, 40, null, Color.WHITE, null,
+                "Periodo:", 50, 1520, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lPeriodo);
 
         // FECHA INICIO DEL CONTRATO -------------------------------------------------
         lFechaInicio = sObjGraficos.construirJLabel(
-                "Fecha de inicio:", 50, 1660, 260, 40, null, Color.WHITE, null,
+                "Fecha de inicio:", 50, 1590, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lFechaInicio);
         
         // FECHA FIN DEL CONTRATO  ------------------------------
         lFechaFin = sObjGraficos.construirJLabel(
-                "Fecha de caducidad:", 50, 1730, 260, 40, null, Color.WHITE, 
+                "Fecha de caducidad:", 50, 1660, 260, 40, null, Color.WHITE, 
                 null, sRecursos.getFontComponente(), "l"
         );
         this.add(lFechaFin);
 
         // VALOR DEL CONTRATO -------------------------------------------
         lValor = sObjGraficos.construirJLabel(
-                "Valor:", 50, 1800, 260, 40, null, Color.WHITE, 
+                "Valor:", 50, 1730, 260, 40, null, Color.WHITE, 
                 null, sRecursos.getFontComponente(), "l"
         );
         this.add(lValor);
         
         // ESTADO DEL CONTRATO ------------------------------------------------------------
         lEstadoContrato = sObjGraficos.construirJLabel(
-                "Estado del contrato:", 50, 1870, 260, 40, null, Color.WHITE, null,
+                "Estado del contrato:", 50, 1800, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lEstadoContrato);
 
         // BORDE -------------------------------------------------------------
         lBorde = sObjGraficos.construirJLabel(
-                null, 040, 1940, 800, 5, null, null, null, null, "l"
+                null, 040, 1870, 800, 5, null, null, null, null, "l"
         );
         lBorde.setBorder(sRecursos.getBordeSeccion());
         this.add(lBorde);
@@ -512,10 +504,6 @@ public class RegistrarContratoTemplate extends JPanel {
         return tTelefono;
     }
 
-    public JTextField gettTelefonoOpcional() {
-        return tTelefonoOpcional;
-    }
-
     public JTextField getTPlaca() {
         return TPlaca;
     }
@@ -557,8 +545,8 @@ public class RegistrarContratoTemplate extends JPanel {
         return cbPeriodo;
     }
 
-    public JComboBox getCbTipoDocumento() {
-        return cbTipoDocumento;
+    public JComboBox getCbTipoIdentificacion() {
+        return cbTipoIdentificacion;
     }
 
     public JComboBox getCbEstadoContrato() {

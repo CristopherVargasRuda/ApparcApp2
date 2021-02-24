@@ -70,13 +70,14 @@ public class Contrato {
     public void setVehiculo(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
     }
-    
-    public boolean isEstadoContrato() {
+
+    public boolean getEstadoContrato() {
         return estadoContrato;
     }
 
     public void setEstadoContrato(boolean estadoContrato) {
         this.estadoContrato = estadoContrato;
     }
+    
 
 }

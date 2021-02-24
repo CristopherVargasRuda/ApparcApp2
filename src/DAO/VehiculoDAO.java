@@ -26,10 +26,6 @@ public class VehiculoDAO {
 
     }
 
-    public void eliminar() {
-
-    }
-
     public void buscar() throws CaException {
 
     }
