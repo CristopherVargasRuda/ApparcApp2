@@ -34,9 +34,8 @@ public class RegistrarIngresoTemplate extends JPanel {
         sObjGraficos = ObjGraficosService.getService();
         sRecursos = RecursosService.getService();
         date = new Date();
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        hourFormat = new SimpleDateFormat("hh:mm:ss a");
-        hourDateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        hourFormat = new SimpleDateFormat("HH:mm:ss");
         estado = 1;
 
         this.crearObjetosDecoradores();
@@ -91,7 +90,7 @@ public class RegistrarIngresoTemplate extends JPanel {
         this.add(tPlaca);
         // CUPO -------------------------------------------------------------------------------------------------------
         tCupo = sObjGraficos.construirJTextField(
-                "Cupo", 520, 550, 100, 40, null, Color.WHITE,
+                "Cupo", 510, 550, 100, 40, null, Color.WHITE,
                 sRecursos.getColorNaranja(), sRecursos.getFontText(), null, "c"
         );
         tCupo.setBorder(sRecursos.getBordeNaranja());
@@ -196,7 +195,7 @@ public class RegistrarIngresoTemplate extends JPanel {
         lFechaIng2.setVisible(false);
 
         // Creacion HORA DE INGRESO 2 ------------------------------------------------------------------------------------
-        lHoraIng2 = sObjGraficos.construirJLabel(hourFormat.format(date), 510, 480, 260, 40, null, Color.WHITE, null,
+        lHoraIng2 = sObjGraficos.construirJLabel(hourFormat.format(date), 525, 480, 260, 40, null, Color.WHITE, null,
                 sRecursos.getFontComponente(), "l"
         );
         this.add(lHoraIng2);
@@ -335,3 +334,4 @@ public class RegistrarIngresoTemplate extends JPanel {
         this.btnBuscar = btnBuscar;
     }
 }
+

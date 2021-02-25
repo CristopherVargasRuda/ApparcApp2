@@ -1,6 +1,7 @@
 package negocio.logic;
 
 import DAO.VehiculoDAO;
+import negocio.models.Parqueadero;
 import negocio.models.Vehiculo;
 import util.CaException;
 
@@ -19,7 +20,20 @@ public class ControlPlaca {
         vehiculo.setTipoVehiculo("");
         vehiculoDAO.setVehiculo(vehiculo);
         vehiculoDAO.buscarPlacaIngreso(placa);
-        if(vehiculoDAO.getVehiculo().getPlaca().equals(placa) && placa!= ""){
+        if(vehiculoDAO.getVehiculo().getPlaca().equals(placa) && !placa.equals("")){
+            vehiculo = vehiculoDAO.getVehiculo();
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean verificarContrato(String parqueadero, String placa) throws CaException {
+        vehiculo.setPlaca("");
+        vehiculo.setTipoVehiculo("");
+        vehiculoDAO.setVehiculo(vehiculo);
+        vehiculoDAO.buscarContrato(parqueadero,placa);
+        if(vehiculoDAO.getVehiculo().getPlaca().equals(placa) && !placa.equals("")){
             vehiculo = vehiculoDAO.getVehiculo();
             return true;
         }else{

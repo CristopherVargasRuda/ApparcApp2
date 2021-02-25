@@ -18,6 +18,23 @@ public class AreaDAO {
         area = new Area();
     }
 
+
+    public void actualizarCuposDisponibles() throws CaException {
+        String sql = "UPDATE area SET q_cuposdisponibles = area.q_cuposdisponibles-1 WHERE k_idarea = ?;";
+        try {
+            Connection conexion = ServiceLocator.getInstance().tomarConexion();
+            PreparedStatement prepStmt = conexion.prepareStatement(sql);
+            prepStmt.setInt(1,area.getIdArea());
+            prepStmt.executeUpdate();
+            prepStmt.close();
+            ServiceLocator.getInstance().commit();
+
+        } catch (SQLException e) {
+            throw new CaException("ParqueaderoDAO", "No se actualizaron los cupos disponibles" + e.getMessage());
+        } finally {
+            ServiceLocator.getInstance().liberarConexion();
+        }
+    }
     public void registrarArea(int codigoParqueadero) throws CaException {
         String sql = "INSERT INTO area(k_idArea, n_tipoVehiculoArea, q_cupos, "
                 + "q_cuposDisponibles, k_codigoParqueadero) VALUES "
@@ -86,3 +103,4 @@ public class AreaDAO {
     }
 
 }
+

@@ -3,9 +3,8 @@ package app.client.components.registrarIngreso;
 import app.client.vistaPrincipal.VistaPrincipalComponent;
 import app.services.ParqueaderoLogueadoService;
 import negocio.logic.ControlPlaca;
-import negocio.models.Area;
-import negocio.models.Espacio;
-import negocio.models.Parqueadero;
+import negocio.logic.ControlRegistrarIngreso;
+import negocio.models.*;
 import util.CaException;
 
 import java.awt.event.ActionEvent;
@@ -22,30 +21,46 @@ public class RegistrarIngresoComponent implements ActionListener, MouseListener,
     private VistaPrincipalComponent vistaPrincipalComponent;
     private JTextField textField;
     private JComboBox jComboBox;
+    private ControlRegistrarIngreso controlRegistrarIngreso;
     private ControlPlaca controlPlaca;
+    private Vehiculo vehiculo;
+    private Servicio servicio;
     private Area area;
+    private Espacio espacio;
+    private boolean bContrato;
+    private boolean existencia;
+    private int count = 6;
+    private String placa = "";
+    private String tipoVehiculo = "";
+    private String tipoSelected = "Tipo";
 
     public RegistrarIngresoComponent(VistaPrincipalComponent vistaPrincipalComponent) {
         this.vistaPrincipalComponent = vistaPrincipalComponent;
         parqueaderoLogueadoService = ParqueaderoLogueadoService.getService();
         registrarIngresoTemplate = new RegistrarIngresoTemplate(this);
+        controlRegistrarIngreso = new ControlRegistrarIngreso();
         controlPlaca = new ControlPlaca();
+        bContrato = false;
+        existencia = false;
+        servicio = new Servicio();
+        area = new Area();
+        espacio = new Espacio();
     }
 
     public RegistrarIngresoTemplate getRegistrarIngresoTemplate() {
         return registrarIngresoTemplate;
     }
 
-    public void verificarExistenciaTipo(String tipo){
-        Boolean existe = false;
-        for(Area area: parqueaderoLogueadoService.getParqueadero().getAreas()) {
-            if(area.equals(tipo)){
-                existe = true;
-                break;
+    public boolean verificarExistenciaTipo(String tipo){
+        for(Area area : parqueaderoLogueadoService.getParqueadero().getAreas()){
+            if(tipo.equals(area.getTipoVehiculo().toLowerCase())){
+                return true;
             }
         }
-
+        JOptionPane.showMessageDialog(null,"No hay area para ese tipo de vehiculo");
+        return false;
     }
+
     public void hacerVisible(){
         registrarIngresoTemplate.getlTipo().setVisible(true);
         registrarIngresoTemplate.getCbTipo().setEnabled(true);
@@ -59,6 +74,7 @@ public class RegistrarIngresoComponent implements ActionListener, MouseListener,
         registrarIngresoTemplate.getBtnRegistrar().setVisible(true);
         registrarIngresoTemplate.getBtnLimpiar().setVisible(true);
     }
+
     public void hacerInvisible(){
         registrarIngresoTemplate.getlTipo().setVisible(false);
         registrarIngresoTemplate.getCbTipo().setEnabled(false);
@@ -78,23 +94,62 @@ public class RegistrarIngresoComponent implements ActionListener, MouseListener,
         registrarIngresoTemplate.gettCupo().setText("");
         registrarIngresoTemplate.getCbTipo().setSelectedIndex(0);
     }
+
     public void habilitar(){
         registrarIngresoTemplate.gettPlaca().setEnabled(true);
         registrarIngresoTemplate.getBtnBuscar().setEnabled(true);
         registrarIngresoTemplate.getCbTipo().setEnabled(true);
     }
-
+    public void validacionExistencia(){
+        if(!existencia){
+            try {
+                controlRegistrarIngreso.registrarVehiculo(servicio.getPlaca(), area.getTipoVehiculo());
+                JOptionPane.showMessageDialog(null,"Se ha ingresado el vehiculo con exito.");
+            } catch (CaException e) {
+                JOptionPane.showMessageDialog(null,"No se han guardado los datos.");
+                e.printStackTrace();
+            }
+        }
+    }
+    public void validacionContrato(){
+        if (bContrato){
+            try{
+                controlRegistrarIngreso.registrarEspacio(espacio);
+                controlRegistrarIngreso.registrarAreas(area);
+                controlRegistrarIngreso.registrarServicio(servicio, parqueaderoLogueadoService.getParqueadero());
+                JOptionPane.showMessageDialog(null,"Se ha asignado cupo con exito.");
+            } catch (CaException e) {
+                JOptionPane.showMessageDialog(null,"No se asignó cupo.");
+                e.printStackTrace();
+            }
+        }else{
+            if (area.getCantidadCuposDisponibles()>parqueaderoLogueadoService.getParqueadero().getContratos().size()){
+                try{
+                    controlRegistrarIngreso.registrarEspacio(espacio);
+                    controlRegistrarIngreso.registrarAreas(area);
+                    controlRegistrarIngreso.registrarServicio(servicio, parqueaderoLogueadoService.getParqueadero());
+                    JOptionPane.showMessageDialog(null,"Se ha asignado cupo con exito.");
+                } catch (CaException e) {
+                    JOptionPane.showMessageDialog(null,"No se asignó cupo.");
+                    e.printStackTrace();
+                }
+            }else{
+                JOptionPane.showMessageDialog(null,"No hay cupos para personas sin contrato");
+            }
+        }
+    }
     public void validacionPlaca(){
-        String placa = "";
-        String tipoVehiculo = "";
-        String tipoSelected = "Tipo";
         try {
             placa = registrarIngresoTemplate.gettPlaca().getText();
             if (placa.equals("") || placa.equals("Placa del vehículo")){
                 JOptionPane.showMessageDialog(null, "Ingrese una placa válida");
             }else{
                 hacerVisible();
+                if (controlPlaca.verificarContrato(parqueaderoLogueadoService.getParqueadero().getNombre(),placa)){
+                    bContrato = true;
+                }
                 if(controlPlaca.verificarExistencia(placa)){
+                    existencia = true;
                     controlPlaca.modificarTipoVehiculo(placa);
                     tipoVehiculo = controlPlaca.getVehiculo().getTipoVehiculo();
                     for( int i=0 ; i<registrarIngresoTemplate.getCbTipo().getItemCount(); i++) {
@@ -112,7 +167,6 @@ public class RegistrarIngresoComponent implements ActionListener, MouseListener,
                 registrarIngresoTemplate.gettPlaca().setEnabled(false);
                 registrarIngresoTemplate.getBtnBuscar().setEnabled(false);
             }
-
         } catch (CaException caException) {
             caException.printStackTrace();
         }
@@ -124,7 +178,10 @@ public class RegistrarIngresoComponent implements ActionListener, MouseListener,
             validacionPlaca();
         }
         if (e.getActionCommand().equals("Registrar")){
-            verificarExistenciaTipo(((String) registrarIngresoTemplate.getCbTipo().getSelectedItem()));
+            validacionExistencia();
+            validacionContrato();
+
+
         }
         if (e.getActionCommand().equals("Limpiar")){
             hacerInvisible();
@@ -153,45 +210,41 @@ public class RegistrarIngresoComponent implements ActionListener, MouseListener,
             jComboBox = ((JComboBox) e.getSource());
             if(e.getStateChange() == ItemEvent.SELECTED){
                 String selected = (String) e.getItem();
-                Area area = new Area();
-                switch(selected){
-                    case "Tipo":
-                        area = null;
-                        break;
-                    case "Automovil":
-                        area = parqueaderoLogueadoService.getParqueadero().getAreas().get(0);
-                        break;
-                    case "Campero":
-                        area = parqueaderoLogueadoService.getParqueadero().getAreas().get(2);
-                        break;
-                    case "Camioneta":
-                        area = parqueaderoLogueadoService.getParqueadero().getAreas().get(3);
-                        break;
-                    case "Vehiculo Pesado":
-                        area = parqueaderoLogueadoService.getParqueadero().getAreas().get(1);
-                        break;
-                    case "Motocicleta":
-                        area = parqueaderoLogueadoService.getParqueadero().getAreas().get(4);
-                        break;
-                    case "Bicicleta":
-                        area = parqueaderoLogueadoService.getParqueadero().getAreas().get(5);
-                        break;
-                    default:
-                        break;
+                if(!selected.equals("Tipo")){
+                    if(!verificarExistenciaTipo(selected.toLowerCase())){
+                        registrarIngresoTemplate.gettCupo().setText("");
+                        registrarIngresoTemplate.getCbTipo().setSelectedIndex(0);
+                    }
+                }
+                for(Area ar: parqueaderoLogueadoService.getParqueadero().getAreas()){
+                    if (selected.equals(ar.getTipoVehiculo())){
+                        area = ar;
+                    }
                 }
                 if (area!=null){
+                    servicio.setCodigoArea(area.getIdArea());
                     for (Espacio espacio : area.getEspacios()){
                         if (espacio.isEstado()){
-                            System.out.println(espacio.getIdEspacio());
-                            System.out.println(espacio.isEstado());
+                            servicio.setCodigoEspacio(espacio.getIdEspacio());
                             registrarIngresoTemplate.gettCupo().setText(String.valueOf(espacio.getIdEspacio()));
                             break;
                         }
                     }
-                    System.out.println(area.getTipoVehiculo());
-                    System.out.println(area.getCantidadCupos());
-                    System.out.println(area.getCantidadCuposDisponibles());
+                    try {
+                        count = controlRegistrarIngreso.ajustarCount();
+                    } catch (CaException caException) {
+                        caException.printStackTrace();
+                    }
+                    espacio.setIdEspacio(servicio.getCodigoEspacio());
+                    servicio.setIdServicio(count+1);
+                    servicio.setFechaIngreso(registrarIngresoTemplate.getlFechaIng2().getText());
+                    servicio.setHoraIngreso(registrarIngresoTemplate.getlHoraIng2().getText());
+                    servicio.setPlaca(placa);
+                    servicio.setCodigoParqueadero(parqueaderoLogueadoService.getParqueadero().getCodigo());
+                }else{
+                    registrarIngresoTemplate.gettCupo().setText("");
                 }
+                registrarIngresoTemplate.gettCupo().setEnabled(false);
             }
         }
     }
