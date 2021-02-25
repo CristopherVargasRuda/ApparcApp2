@@ -8,12 +8,17 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import negocio.models.Servicio;
+import util.CaException;
 
 public class EstadisticaCantidadServiciosComponent implements ActionListener, MouseListener, FocusListener {
 
@@ -28,6 +33,7 @@ public class EstadisticaCantidadServiciosComponent implements ActionListener, Mo
     private Servicio servicio;
 
     public EstadisticaCantidadServiciosComponent(ConsultaEstadisticasComponent consultaEstadisticasComponent) {
+        controlTablasCantidadServicios = new ControlTablaCantidadServicios();
         this.consultaEstadisticasComponent = consultaEstadisticasComponent;
         estadisticaCantidadServiciosTemplate = new EstadisticaCantidadServiciosTemplate(this);
     }
@@ -38,6 +44,15 @@ public class EstadisticaCantidadServiciosComponent implements ActionListener, Mo
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (cargarDatos()) {
+            try {
+                controlTablasCantidadServicios.cargarCantidadServicios();
+                actualizarTabla();
+                montarDatos();
+            } catch (CaException | ParseException | SQLException ex) {
+                Logger.getLogger(EstadisticaCantidadServiciosComponent.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override
@@ -110,7 +125,7 @@ public class EstadisticaCantidadServiciosComponent implements ActionListener, Mo
         texto = (String) estadisticaCantidadServiciosTemplate
                 .getCbDiaInicio().getSelectedItem();
         if (!texto.equals("Día")) {
-            controlTablasCantidadServicios.setDiaInicio(texto);
+            controlTablasCantidadServicios.setDia(texto);
         } else {
             estadisticaCantidadServiciosTemplate
                     .getCbDiaInicio().setBorder(BorderFactory.createLineBorder(estadisticaCantidadServiciosTemplate
@@ -125,7 +140,46 @@ public class EstadisticaCantidadServiciosComponent implements ActionListener, Mo
         texto = (String) estadisticaCantidadServiciosTemplate
                 .getCbMesInicio().getSelectedItem();
         if (!texto.equals("Mes")) {
-            controlTablasCantidadServicios.setMesInicio(texto);
+            switch (texto) {
+                case "Enero":
+                    controlTablasCantidadServicios.setMes("1");
+                    break;
+                case "Febrero":
+                    controlTablasCantidadServicios.setMes("2");
+                    break;
+                case "Marzo":
+                    controlTablasCantidadServicios.setMes("3");
+                    break;
+                case "Abril":
+                    controlTablasCantidadServicios.setMes("4");
+                    break;
+                case "Mayo":
+                    controlTablasCantidadServicios.setMes("5");
+                    break;
+                case "Junio":
+                    controlTablasCantidadServicios.setMes("6");
+                    break;
+                case "Julio":
+                    controlTablasCantidadServicios.setMes("7");
+                    break;
+                case "Agosto":
+                    controlTablasCantidadServicios.setMes("8");
+                    break;
+                case "Setptiembre":
+                    controlTablasCantidadServicios.setMes("9");
+                    break;
+                case "Octubre":
+                    controlTablasCantidadServicios.setMes("10");
+                    break;
+                case "Noviembre":
+                    controlTablasCantidadServicios.setMes("11");
+                    break;
+                case "Diciembre":
+                    controlTablasCantidadServicios.setMes("12");
+                    break;
+                default:
+                    break;
+            }
         } else {
             estadisticaCantidadServiciosTemplate
                     .getCbMesInicio().setBorder(BorderFactory.createLineBorder(estadisticaCantidadServiciosTemplate
@@ -140,7 +194,7 @@ public class EstadisticaCantidadServiciosComponent implements ActionListener, Mo
         texto = (String) estadisticaCantidadServiciosTemplate
                 .getCbAnioInicio().getSelectedItem();
         if (!texto.equals("Año")) {
-            controlTablasCantidadServicios.setAnioInicio(texto);
+            controlTablasCantidadServicios.setAnio(texto);
         } else {
             estadisticaCantidadServiciosTemplate
                     .getCbAnioInicio().setBorder(BorderFactory.createLineBorder(estadisticaCantidadServiciosTemplate
@@ -155,21 +209,19 @@ public class EstadisticaCantidadServiciosComponent implements ActionListener, Mo
     }
 
     public void montarDatos() {
-        /*consultaEntradasYSalidasTemplate.gettPlaca().setText(control.getPlaca());
-        consultaEntradasYSalidasTemplate.gettCantidadEntradas().setText(
-                control.getCantidadEntradas() + ""
+        estadisticaCantidadServiciosTemplate.gettTotalVehiculos().setText(
+                controlTablasCantidadServicios.getCantidadVehiculos()+""
         );
-        consultaEntradasYSalidasTemplate.gettCantidadSalidas().setText(
-                control.getCantidadSalidas() + ""
+        estadisticaCantidadServiciosTemplate.gettTotalServicios().setText(
+                controlTablasCantidadServicios.getCantidadServicios()+""
         );
-        this.mostrarRegistrosTabla();*/
-        estadisticaCantidadServiciosTemplate.getCbPeriodo().setSelectedIndex(0);
-        estadisticaCantidadServiciosTemplate.getCbDiaInicio().setSelectedIndex(0);
-        estadisticaCantidadServiciosTemplate.getCbMesInicio().setSelectedIndex(0);
-        estadisticaCantidadServiciosTemplate.getCbAnioInicio().setSelectedIndex(0);
-        estadisticaCantidadServiciosTemplate.gettTotalVehiculos().setText("123456");
     }
-    
+
+    public void actualizarTabla() throws CaException, SQLException, ParseException {
+        limpiarTabla();
+        this.mostrarRegistrosTabla();
+    }
+
     public void mostrarRegistrosTabla() {
         for (int i = 0; i < controlTablasCantidadServicios.devolverCantidadServicios(); i++) {
             servicio = controlTablasCantidadServicios.devolverServicio(i);
@@ -178,17 +230,26 @@ public class EstadisticaCantidadServiciosComponent implements ActionListener, Mo
     }
 
     public void agregarRegistro(Servicio servicio) {
-       /* String parqueadero, vehiculo, fechaIngreso, horaIngreso;
+        String parqueadero, vehiculo, fechaIngreso, horaIngreso;
         parqueadero = servicio.getParqueadero().getNombre();
-        vehiculo = servicio.getVehiculo().getPlaca();        
-        fechaIngreso = servicio.getDiaIngreso() + " / "
-                + servicio.getMesIngreso() + " / " + servicio.getAnioIngreso();
-        horaIngreso = servicio.getHoraIngreso()+ "";
+        vehiculo = servicio.getPlaca();
+        fechaIngreso = servicio.getFechaIngreso();
+        horaIngreso = servicio.getHoraIngreso() + "";
         estadisticaCantidadServiciosTemplate.getModelo().addRow(
                 new Object[]{
                     parqueadero, vehiculo, fechaIngreso, horaIngreso
                 }
-        );*/
+        );
+    }
+
+    public void limpiarTabla() {
+        int a = estadisticaCantidadServiciosTemplate.getModelo().getRowCount() - 1;
+        for (int i = a; i >= 0; i--) {
+            estadisticaCantidadServiciosTemplate.getModelo().removeRow(
+                    estadisticaCantidadServiciosTemplate.getModelo().getRowCount() - 1
+            );
+        }
+        estadisticaCantidadServiciosTemplate.repaint();
     }
 
 }

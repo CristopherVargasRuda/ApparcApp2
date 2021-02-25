@@ -7,6 +7,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import negocio.logic.controlTablas.ControlTablaRecaudo;
 import negocio.models.Servicio;
+import util.CaException;
 
 public class EstadisticaRecaudoComponent implements ActionListener, MouseListener, FocusListener {
 
@@ -25,9 +30,9 @@ public class EstadisticaRecaudoComponent implements ActionListener, MouseListene
     private JButton boton;
     private JTextField textField;
     private JComboBox comboBox;
-    
 
     public EstadisticaRecaudoComponent(ConsultaEstadisticasComponent consultaEstadisticasComponent) {
+        controlTablaRecaudo = new ControlTablaRecaudo();
         this.consultaEstadisticasComponent = consultaEstadisticasComponent;
         estadisticaRecaudoTemplate = new EstadisticaRecaudoTemplate(this);
     }
@@ -38,6 +43,14 @@ public class EstadisticaRecaudoComponent implements ActionListener, MouseListene
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (cargarDatos()) {
+            try {
+                controlTablaRecaudo.cargarCantidadServicios();
+                actualizarTabla();
+            } catch (CaException | ParseException | SQLException ex) {
+                Logger.getLogger(EstadisticaRecaudoComponent.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override
@@ -110,7 +123,7 @@ public class EstadisticaRecaudoComponent implements ActionListener, MouseListene
         texto = (String) estadisticaRecaudoTemplate
                 .getCbDiaInicio().getSelectedItem();
         if (!texto.equals("Día")) {
-            controlTablaRecaudo.setDiaInicio(texto);
+            controlTablaRecaudo.setDia(texto);
         } else {
             estadisticaRecaudoTemplate
                     .getCbDiaInicio().setBorder(BorderFactory.createLineBorder(estadisticaRecaudoTemplate
@@ -125,7 +138,46 @@ public class EstadisticaRecaudoComponent implements ActionListener, MouseListene
         texto = (String) estadisticaRecaudoTemplate
                 .getCbMesInicio().getSelectedItem();
         if (!texto.equals("Mes")) {
-            controlTablaRecaudo.setMesInicio(texto);
+            switch (texto) {
+                case "Enero":
+                    controlTablaRecaudo.setMes("1");
+                    break;
+                case "Febrero":
+                    controlTablaRecaudo.setMes("2");
+                    break;
+                case "Marzo":
+                    controlTablaRecaudo.setMes("3");
+                    break;
+                case "Abril":
+                    controlTablaRecaudo.setMes("4");
+                    break;
+                case "Mayo":
+                    controlTablaRecaudo.setMes("5");
+                    break;
+                case "Junio":
+                    controlTablaRecaudo.setMes("6");
+                    break;
+                case "Julio":
+                    controlTablaRecaudo.setMes("7");
+                    break;
+                case "Agosto":
+                    controlTablaRecaudo.setMes("8");
+                    break;
+                case "Setptiembre":
+                    controlTablaRecaudo.setMes("9");
+                    break;
+                case "Octubre":
+                    controlTablaRecaudo.setMes("10");
+                    break;
+                case "Noviembre":
+                    controlTablaRecaudo.setMes("11");
+                    break;
+                case "Diciembre":
+                    controlTablaRecaudo.setMes("12");
+                    break;
+                default:
+                    break;
+            }
         } else {
             estadisticaRecaudoTemplate
                     .getCbMesInicio().setBorder(BorderFactory.createLineBorder(estadisticaRecaudoTemplate
@@ -140,7 +192,7 @@ public class EstadisticaRecaudoComponent implements ActionListener, MouseListene
         texto = (String) estadisticaRecaudoTemplate
                 .getCbAnioInicio().getSelectedItem();
         if (!texto.equals("Año")) {
-            controlTablaRecaudo.setAnioInicio(texto);
+            controlTablaRecaudo.setAnio(texto);
         } else {
             estadisticaRecaudoTemplate
                     .getCbAnioInicio().setBorder(BorderFactory.createLineBorder(estadisticaRecaudoTemplate
@@ -154,18 +206,36 @@ public class EstadisticaRecaudoComponent implements ActionListener, MouseListene
         return true;
     }
 
+    public void actualizarTabla() throws CaException, SQLException, ParseException {
+        limpiarTabla();
+        this.mostrarRegistrosTabla();
+    }
+
     public void mostrarRegistrosTabla() {
         String parqueadero;
         String recaudo;
+        estadisticaRecaudoTemplate.gettTotal().setText(
+                controlTablaRecaudo.getTotalRecaudo() + ""
+        );
         for (int i = 0; i < controlTablaRecaudo.devolverCantidadParqueaderos(); i++) {
             parqueadero = controlTablaRecaudo.devolverParqueadero(i);
-            recaudo = controlTablaRecaudo.devolverRecaudo(i);
+            recaudo = controlTablaRecaudo.devolverRecaudo(i) + "";
             estadisticaRecaudoTemplate.getModelo().addRow(
                     new Object[]{
                         parqueadero, recaudo
                     }
             );
         }
+    }
+
+    public void limpiarTabla() {
+        int a = estadisticaRecaudoTemplate.getModelo().getRowCount() - 1;
+        for (int i = a; i >= 0; i--) {
+            estadisticaRecaudoTemplate.getModelo().removeRow(
+                    estadisticaRecaudoTemplate.getModelo().getRowCount() - 1
+            );
+        }
+        estadisticaRecaudoTemplate.repaint();
     }
 
 }

@@ -19,17 +19,6 @@ public class ParqueaderoDAO {
     }
 
     public void insertar() throws CaException {
-        /*Parqueadero parqueadero = new Parqueadero();
-        parqueadero.setNombre("Edilberto");
-        parqueadero.setCodigo(1111);
-        parqueadero.setClave("holi");
-        parqueadero.setCantidadNiveles(2);
-        parqueadero.setDireccion("holaaaaaaa");
-        parqueadero.setEstado(true);
-        parqueadero.setLocalidad("Suba");
-        parqueadero.setSubterraneo(true);
-        parqueadero.setTipoSuelo("bonito");
-        parqueadero.setFactorDemandaZonal((float) 0.8);*/
         String sql = "INSERT INTO parqueadero(k_codigoParqueadero, "
                 + "n_nombreParqueadero, n_direccion, n_localidad, "
                 + "i_subterraneo, q_cantidadNiveles, i_tipoSuelo, "
@@ -65,7 +54,7 @@ public class ParqueaderoDAO {
 
     }
 
-    public void cargarDatosTablaParqueaderos() throws CaException{
+    public void cargarDatosTablaParqueaderos() throws CaException {
         String sql = "SELECT * FROM parqueadero;";
         ResultSet rs;
         try {
@@ -94,7 +83,7 @@ public class ParqueaderoDAO {
             ServiceLocator.getInstance().liberarConexion();
         }
     }
-    
+
     public void buscarLogin(String nombre, String clave) throws CaException {
         String sql = "SELECT * FROM  parqueadero WHERE n_nombreparqueadero = '"
                 + nombre + "' AND o_contrasenaparqueadero = '" + clave + "';";
@@ -122,15 +111,15 @@ public class ParqueaderoDAO {
             ServiceLocator.getInstance().liberarConexion();
         }
     }
-    
-    public void traerParqueadero(String nombreParqueadero)throws CaException {
-        System.out.println(nombreParqueadero+" DAO");
+
+    public void traerParqueadero(String nombreParqueadero) throws CaException {
+        System.out.println(nombreParqueadero + " DAO");
         parqueadero.setNombre(nombreParqueadero);
-        
+
         String sql = "SELECT k_codigoparqueadero, n_nombreparqueadero, n_direccion, n_localidad, i_estadoparqueadero "
-                    + "FROM parqueadero "
-                    + "where n_nombreparqueadero = ?;";
-        
+                + "FROM parqueadero "
+                + "WHERE n_nombreparqueadero = ?;";
+
         ResultSet rs;
         try {
             Connection conexion = ServiceLocator.getInstance().tomarConexion();
@@ -146,12 +135,39 @@ public class ParqueaderoDAO {
                 parqueadero.setEstado(rs.getBoolean("i_estadoparqueadero"));
             }
         } catch (SQLException e) {
-            throw new CaException("ParqueaderoDAO", "No se pudo cargar los datos del espacio" + e.getMessage());
+            throw new CaException("ParqueaderoDAO", "No se pudo cargar los datos del Parqueadero" + e.getMessage());
         } finally {
             ServiceLocator.getInstance().liberarConexion();
         }
     }
-    
+
+    public void traerParqueaderoPorCodigo(int codigo) throws CaException {
+
+        String sql = "SELECT k_codigoparqueadero, n_nombreparqueadero, "
+                + "n_direccion, n_localidad, i_estadoparqueadero "
+                + "FROM parqueadero WHERE k_codigoparqueadero = ?;";
+
+        ResultSet rs;
+        try {
+            Connection conexion = ServiceLocator.getInstance().tomarConexion();
+            PreparedStatement prepStmt = conexion.prepareStatement(sql);
+            prepStmt.setInt(1, codigo);
+            rs = prepStmt.executeQuery();
+            while (rs.next()) {
+                parqueadero.setCodigo(rs.getInt("k_codigoparqueadero"));
+                parqueadero.setNombre(rs.getString("n_nombreparqueadero"));
+                parqueadero.setDireccion(rs.getString("n_direccion"));
+                parqueadero.setLocalidad(rs.getString("n_localidad"));
+                parqueadero.setEstado(rs.getBoolean("i_estadoparqueadero"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e);
+            throw new CaException("ParqueaderoDAO", "No se pudo cargar los datos del Parqueadero" + e.getMessage());
+        } finally {
+            ServiceLocator.getInstance().liberarConexion();
+        }
+    }
+
     public Parqueadero getParqueadero() {
         return parqueadero;
     }
@@ -168,5 +184,4 @@ public class ParqueaderoDAO {
         this.parqueaderos = parqueaderos;
     }
 
-    
 }

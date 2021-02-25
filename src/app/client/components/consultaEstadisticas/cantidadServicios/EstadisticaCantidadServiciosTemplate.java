@@ -250,4 +250,8 @@ public class EstadisticaCantidadServiciosTemplate extends JPanel {
         return modelo;
     }
 
+    public JTextField gettTotalServicios() {
+        return tTotalServicios;
+    }
+
 }

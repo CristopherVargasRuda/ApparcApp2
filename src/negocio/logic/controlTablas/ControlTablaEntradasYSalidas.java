@@ -11,7 +11,7 @@ import negocio.models.Vehiculo;
 import util.CaException;
 
 public class ControlTablaEntradasYSalidas {
-    
+
     private String placa, periodo, dia, mes, anio;
     private int cantidadEntradas, cantidadSalidas;
     private ArrayList<Servicio> servicios;
@@ -20,13 +20,13 @@ public class ControlTablaEntradasYSalidas {
     private VehiculoDAO vehiculoDAO;
     private ServicioDAO servicioDAO;
     private ParqueaderoDAO parqueaderoDAO;
-    
 
     public ControlTablaEntradasYSalidas() {
         vehiculoDAO = new VehiculoDAO();
         servicioDAO = new ServicioDAO();
         parqueaderoDAO = new ParqueaderoDAO();
         servicios = new ArrayList<>();
+        
     }
 
     public Servicio devolverServicio(int posicion) {
@@ -36,16 +36,48 @@ public class ControlTablaEntradasYSalidas {
             return null;
         }
     }
-    
-    public void cargarContrato() throws CaException, ParseException {
+
+    public void cargarDatosEntradasYSalidas() throws CaException, ParseException {
+        if (Integer.parseInt(dia) > 28 && Integer.parseInt(mes) == 2) {
+            dia = "1";
+            mes = "3";
+        }
+        String fechaIngreso = anio + "-" + mes + "-" + dia;
+        if (periodo.equals("Día")) {
+            dia = (Integer.parseInt(dia) + 1) + "";
+        }
+        if (periodo.equals("Mes")) {
+            mes = (Integer.parseInt(mes) + 1) + "";
+        }
+        if (periodo.equals("Año")) {
+            anio = (Integer.parseInt(anio) + 1) + "";
+        }
+        if (Integer.parseInt(dia) > 30) {
+            dia = "1";
+            mes = (Integer.parseInt(mes) + 1) + "";
+        }
+        if (Integer.parseInt(mes) > 12) {
+            mes = "1";
+            anio = (Integer.parseInt(anio) + 1) + "";
+        }
+        String fechaSalida = anio + "-" + mes + "-" + dia;
         servicios.clear();
         servicioDAO.setServicios(servicios);
-        servicioDAO.cargarServiciosPorPlaca("AAE231", "2020-01-20", "2023-03-20");
+        servicioDAO.cargarServiciosPorPlaca(placa, fechaIngreso, fechaSalida);
         servicios = servicioDAO.getServicios();
-        for (Servicio servicio: servicios){
-            System.out.println(servicio.getFechaIngreso());
-            System.out.println(servicio.getFechaSalida());
+        servicioDAO.setCantidadIngresos(0);
+        servicioDAO.setCantidadSalidas(0);
+        servicioDAO.cargarCantidadServiciosPorPlaca(placa, fechaIngreso, fechaSalida);
+        cantidadEntradas = servicioDAO.getCantidadIngresos();
+        cantidadSalidas = servicioDAO.getCantidadSalidas();
+        for (Servicio servicio : servicios){
+            parqueadero = new Parqueadero();
+            parqueaderoDAO.setParqueadero(parqueadero);
+            parqueaderoDAO.traerParqueaderoPorCodigo(servicio.getCodigoParqueadero());
+            parqueaderoDAO.getParqueadero();
+            servicio.setParqueadero(parqueadero);
         }
+        
     }
 
     public void agregarServicio(Servicio servicios) {
@@ -111,7 +143,5 @@ public class ControlTablaEntradasYSalidas {
     public void setAnio(String anio) {
         this.anio = anio;
     }
-     
-    
-    
+
 }

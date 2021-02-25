@@ -16,6 +16,7 @@ public class VehiculoDAO {
 
     private Parqueadero parqueadero;
     private Vehiculo vehiculo;
+    private int cantidadVehiculos;
     private ArrayList<Vehiculo> vehiculos;
 
     public VehiculoDAO() {
@@ -39,7 +40,7 @@ public class VehiculoDAO {
 
     }
 
-    public void buscarPlacaIngreso(String placa) throws CaException{
+    public void buscarPlacaIngreso(String placa) throws CaException {
         String sql = "SELECT ve.k_placa FROM vehiculo ve WHERE ve.k_placa = ?;";
         ResultSet rs;
         try {
@@ -59,13 +60,13 @@ public class VehiculoDAO {
 
     public void buscarTipoVehiculo(String placa) throws CaException {
         String sql = "SELECT ve.k_placa, ve.n_tipovehiculo FROM vehiculo ve, contrato co"
-                +" WHERE ve.k_placa = co.k_placa"
-                +" AND ve.k_placa = ?;";
+                + " WHERE ve.k_placa = co.k_placa"
+                + " AND ve.k_placa = ?;";
         ResultSet rs;
         try {
             Connection conexion = ServiceLocator.getInstance().tomarConexion();
             PreparedStatement prepStmt = conexion.prepareStatement(sql);
-            prepStmt.setString( 1, placa);
+            prepStmt.setString(1, placa);
             rs = prepStmt.executeQuery();
             while (rs.next()) {
                 vehiculo.setPlaca(rs.getString("k_placa"));
@@ -79,10 +80,10 @@ public class VehiculoDAO {
         }
     }
 
-    public static String primeraMayus(String str){
-        if(str == null || str.isEmpty()){
+    public static String primeraMayus(String str) {
+        if (str == null || str.isEmpty()) {
             return "";
-        }else{
+        } else {
             return str.substring(0, 1).toUpperCase() + str.substring(1);
         }
     }
@@ -107,7 +108,7 @@ public class VehiculoDAO {
             ServiceLocator.getInstance().liberarConexion();
         }
     }
-    
+
     public void cargarDatosContrato(String placa) throws CaException {
         String sql = "SELECT * FROM vehiculo ve, contrato co "
                 + "WHERE ve.k_placa = co.k_placa "
@@ -132,7 +133,24 @@ public class VehiculoDAO {
             ServiceLocator.getInstance().liberarConexion();
         }
     }
-    
+
+    public void cargarCantidadTotalVehiculos() throws CaException {
+        String sql = "SELECT COUNT(k_placa) AS total FROM vehiculo;";
+        ResultSet rs;
+        try {
+            Connection conexion = ServiceLocator.getInstance().tomarConexion();
+            PreparedStatement prepStmt = conexion.prepareStatement(sql);
+            rs = prepStmt.executeQuery();
+            while (rs.next()) {
+                cantidadVehiculos = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            System.out.println("error: " + e);
+            throw new CaException("VehiculoDAO", "No se pudo cargar los datos del  Vehiculo" + e.getMessage());
+        } finally {
+            ServiceLocator.getInstance().liberarConexion();
+        }
+    }
 
     public Vehiculo getVehiculo() {
         return vehiculo;
@@ -148,6 +166,14 @@ public class VehiculoDAO {
 
     public void setVehiculos(ArrayList<Vehiculo> vehiculos) {
         this.vehiculos = vehiculos;
+    }
+
+    public int getCantidadVehiculos() {
+        return cantidadVehiculos;
+    }
+
+    public void setCantidadVehiculos(int cantidadVehiculos) {
+        this.cantidadVehiculos = cantidadVehiculos;
     }
 
 }

@@ -10,6 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,11 +48,12 @@ public class EstadisticaEntradasYSalidasComponent implements ActionListener, Mou
     public void actionPerformed(ActionEvent e) {
         if (cargarDatos()) {
             try {
-                control.cargarContrato();
-                //montarDatos();
-            } catch (CaException ex) {
+                control.cargarDatosEntradasYSalidas();
+                actualizarTabla();
+                montarDatos();
+            } catch (CaException | ParseException ex) {
                 Logger.getLogger(EstadisticaEntradasYSalidasComponent.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ParseException ex) {
+            } catch (SQLException ex) {
                 Logger.getLogger(EstadisticaEntradasYSalidasComponent.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -175,7 +177,47 @@ public class EstadisticaEntradasYSalidasComponent implements ActionListener, Mou
         // VERIVICACIÓN MES -----------------------------------------------
         texto = (String) estadisticaEntradasYSalidasTemplate.getCbMesInicio().getSelectedItem();
         if (!texto.equals("Mes")) {
-            control.setMes(texto);
+            switch (texto) {
+                case "Enero":
+                    control.setMes("1");
+                    break;
+                case "Febrero":
+                    control.setMes("2");
+                    break;
+                case "Marzo":
+                    control.setMes("3");
+                    break;
+                case "Abril":
+                    control.setMes("4");
+                    break;
+                case "Mayo":
+                    control.setMes("5");
+                    break;
+                case "Junio":
+                    control.setMes("6");
+                    break;
+                case "Julio":
+                    control.setMes("7");
+                    break;
+                case "Agosto":
+                    control.setMes("8");
+                    break;
+                case "Setptiembre":
+                    control.setMes("9");
+                    break;
+                case "Octubre":
+                    control.setMes("10");
+                    break;
+                case "Noviembre":
+                    control.setMes("11");
+                    break;
+                case "Diciembre":
+                    control.setMes("12");
+                    break;
+                default:
+                    break;
+            }
+
         } else {
             estadisticaEntradasYSalidasTemplate.getCbMesInicio().setBorder(
                     BorderFactory.createLineBorder(
@@ -204,19 +246,23 @@ public class EstadisticaEntradasYSalidasComponent implements ActionListener, Mou
     }
 
     public void montarDatos() {
-        /*consultaEntradasYSalidasTemplate.gettPlaca().setText(control.getPlaca());
-        consultaEntradasYSalidasTemplate.gettCantidadEntradas().setText(
+        estadisticaEntradasYSalidasTemplate.gettPlaca().setText(control.getPlaca());
+        estadisticaEntradasYSalidasTemplate.gettCantidadEntradas().setText(
                 control.getCantidadEntradas() + ""
         );
-        consultaEntradasYSalidasTemplate.gettCantidadSalidas().setText(
+        estadisticaEntradasYSalidasTemplate.gettCantidadSalidas().setText(
                 control.getCantidadSalidas() + ""
         );
-        this.mostrarRegistrosTabla();*/
         estadisticaEntradasYSalidasTemplate.gettIngresarPlaca().setText("");
         estadisticaEntradasYSalidasTemplate.getCbPeriodo().setSelectedIndex(0);
         estadisticaEntradasYSalidasTemplate.getCbDiaInicio().setSelectedIndex(0);
         estadisticaEntradasYSalidasTemplate.getCbMesInicio().setSelectedIndex(0);
         estadisticaEntradasYSalidasTemplate.getCbAnioInicio().setSelectedIndex(0);
+    }
+    
+    public void actualizarTabla() throws CaException, SQLException, ParseException {
+        limpiarTabla();
+        this.mostrarRegistrosTabla();
     }
 
     public void mostrarRegistrosTabla() {
@@ -230,20 +276,28 @@ public class EstadisticaEntradasYSalidasComponent implements ActionListener, Mou
         String parqueadero, idServicio, coste, fechaIngreso, horaIngreso,
                 fechaSalida, horaSalida;
         parqueadero = servicio.getParqueadero().getNombre();
-        /*idServicio = servicio.getIdServicio();
+        idServicio = servicio.getIdServicio() + "";
         coste = servicio.getValorPago() + "";
-        fechaIngreso = servicio.getDiaIngreso() + " / "
-                + servicio.getMesIngreso() + " / " + servicio.getAnioIngreso();
-        horaIngreso = servicio.getHoraIngreso() + "";
-        fechaSalida = servicio.getDiaSalida() + " / "
-                + servicio.getMesSalida() + " / " + servicio.getAnioSalida();
-        horaSalida = servicio.getHoraSalida() + "";_
+        fechaIngreso = servicio.getFechaIngreso();
+        horaIngreso = servicio.getHoraIngreso();
+        fechaSalida = servicio.getFechaSalida();
+        horaSalida = servicio.getHoraSalida();
         estadisticaEntradasYSalidasTemplate.getModelo().addRow(
                 new Object[]{
                     parqueadero, idServicio, coste, fechaIngreso, horaIngreso,
                     fechaSalida, horaSalida
                 }
-        );*/
+        );
+    }
+    
+    public void limpiarTabla() {
+        int a = estadisticaEntradasYSalidasTemplate.getModelo().getRowCount() - 1;
+        for (int i = a; i >= 0; i--) {
+            estadisticaEntradasYSalidasTemplate.getModelo().removeRow(
+                    estadisticaEntradasYSalidasTemplate.getModelo().getRowCount() - 1
+            );
+        }
+        estadisticaEntradasYSalidasTemplate.repaint();
     }
 
 }
